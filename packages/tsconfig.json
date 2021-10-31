@@ -114,6 +114,9 @@
       "path": "./sources/ap-election"
     },
     {
+      "path": "./sources/balances"
+    },
+    {
       "path": "./sources/binance"
     },
     {
