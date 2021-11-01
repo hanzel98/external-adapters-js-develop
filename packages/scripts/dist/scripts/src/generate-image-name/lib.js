@@ -1,0 +1,32 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateImageName = void 0;
+const lib_1 = require("../docker-build/lib");
+/**
+ * Create a image name that matches what the "docker-build" script outputs as a docker-compose file.
+ *
+ * Used as a workaround to a gha restriction where we were unable to use the output of the "gha" action if it contained secrets.
+ */
+async function generateImageName() {
+    // A descoped adapter name is the name field of package.json of an adapter, without the org scope of "@chainlink/"
+    const descopedName = process.env.ADAPTER_NAME;
+    const branch = process.env.BRANCH || '';
+    const prefix = process.env.IMAGE_PREFIX || '';
+    const useLatest = !!process.env.LATEST;
+    if (!descopedName) {
+        throw Error('A descoped adapter name must be available as an environment variable under ADAPTER_NAME');
+    }
+    const dockerfile = await lib_1.generateFileJSON({ prefix, branch, useLatest }, { context: '.' });
+    const adapters = Object.entries(dockerfile.services)
+        .filter(([k]) => k === descopedName)
+        .map(([, v]) => v.image);
+    if (adapters.length === 0) {
+        throw Error(`Invalid adapter name provided, no matching adapter name found in workspace packages.`);
+    }
+    if (adapters.length > 1) {
+        throw Error(`Ambiguous adapter name provided, multiple matching adapter names found in workspace packages.`);
+    }
+    return adapters[0];
+}
+exports.generateImageName = generateImageName;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGliLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL2dlbmVyYXRlLWltYWdlLW5hbWUvbGliLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUFBLDZDQUFzRDtBQUV0RDs7OztHQUlHO0FBQ0ksS0FBSyxVQUFVLGlCQUFpQjtJQUNyQyxrSEFBa0g7SUFDbEgsTUFBTSxZQUFZLEdBQUcsT0FBTyxDQUFDLEdBQUcsQ0FBQyxZQUFZLENBQUE7SUFDN0MsTUFBTSxNQUFNLEdBQUcsT0FBTyxDQUFDLEdBQUcsQ0FBQyxNQUFNLElBQUksRUFBRSxDQUFBO0lBQ3ZDLE1BQU0sTUFBTSxHQUFHLE9BQU8sQ0FBQyxHQUFHLENBQUMsWUFBWSxJQUFJLEVBQUUsQ0FBQTtJQUM3QyxNQUFNLFNBQVMsR0FBRyxDQUFDLENBQUMsT0FBTyxDQUFDLEdBQUcsQ0FBQyxNQUFNLENBQUE7SUFFdEMsSUFBSSxDQUFDLFlBQVksRUFBRTtRQUNqQixNQUFNLEtBQUssQ0FDVCx5RkFBeUYsQ0FDMUYsQ0FBQTtLQUNGO0lBRUQsTUFBTSxVQUFVLEdBQUcsTUFBTSxzQkFBZ0IsQ0FBQyxFQUFFLE1BQU0sRUFBRSxNQUFNLEVBQUUsU0FBUyxFQUFFLEVBQUUsRUFBRSxPQUFPLEVBQUUsR0FBRyxFQUFFLENBQUMsQ0FBQTtJQUMxRixNQUFNLFFBQVEsR0FBRyxNQUFNLENBQUMsT0FBTyxDQUFDLFVBQVUsQ0FBQyxRQUFRLENBQUM7U0FDakQsTUFBTSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsRUFBRSxFQUFFLENBQUMsQ0FBQyxLQUFLLFlBQVksQ0FBQztTQUNuQyxHQUFHLENBQUMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLEVBQUUsRUFBRSxDQUFDLENBQUMsQ0FBQyxLQUFLLENBQUMsQ0FBQTtJQUUxQixJQUFJLFFBQVEsQ0FBQyxNQUFNLEtBQUssQ0FBQyxFQUFFO1FBQ3pCLE1BQU0sS0FBSyxDQUNULHNGQUFzRixDQUN2RixDQUFBO0tBQ0Y7SUFDRCxJQUFJLFFBQVEsQ0FBQyxNQUFNLEdBQUcsQ0FBQyxFQUFFO1FBQ3ZCLE1BQU0sS0FBSyxDQUNULCtGQUErRixDQUNoRyxDQUFBO0tBQ0Y7SUFFRCxPQUFPLFFBQVEsQ0FBQyxDQUFDLENBQUMsQ0FBQTtBQUNwQixDQUFDO0FBOUJELDhDQThCQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGdlbmVyYXRlRmlsZUpTT04gfSBmcm9tICcuLi9kb2NrZXItYnVpbGQvbGliJ1xuXG4vKipcbiAqIENyZWF0ZSBhIGltYWdlIG5hbWUgdGhhdCBtYXRjaGVzIHdoYXQgdGhlIFwiZG9ja2VyLWJ1aWxkXCIgc2NyaXB0IG91dHB1dHMgYXMgYSBkb2NrZXItY29tcG9zZSBmaWxlLlxuICpcbiAqIFVzZWQgYXMgYSB3b3JrYXJvdW5kIHRvIGEgZ2hhIHJlc3RyaWN0aW9uIHdoZXJlIHdlIHdlcmUgdW5hYmxlIHRvIHVzZSB0aGUgb3V0cHV0IG9mIHRoZSBcImdoYVwiIGFjdGlvbiBpZiBpdCBjb250YWluZWQgc2VjcmV0cy5cbiAqL1xuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGdlbmVyYXRlSW1hZ2VOYW1lKCk6IFByb21pc2U8c3RyaW5nPiB7XG4gIC8vIEEgZGVzY29wZWQgYWRhcHRlciBuYW1lIGlzIHRoZSBuYW1lIGZpZWxkIG9mIHBhY2thZ2UuanNvbiBvZiBhbiBhZGFwdGVyLCB3aXRob3V0IHRoZSBvcmcgc2NvcGUgb2YgXCJAY2hhaW5saW5rL1wiXG4gIGNvbnN0IGRlc2NvcGVkTmFtZSA9IHByb2Nlc3MuZW52LkFEQVBURVJfTkFNRVxuICBjb25zdCBicmFuY2ggPSBwcm9jZXNzLmVudi5CUkFOQ0ggfHwgJydcbiAgY29uc3QgcHJlZml4ID0gcHJvY2Vzcy5lbnYuSU1BR0VfUFJFRklYIHx8ICcnXG4gIGNvbnN0IHVzZUxhdGVzdCA9ICEhcHJvY2Vzcy5lbnYuTEFURVNUXG5cbiAgaWYgKCFkZXNjb3BlZE5hbWUpIHtcbiAgICB0aHJvdyBFcnJvcihcbiAgICAgICdBIGRlc2NvcGVkIGFkYXB0ZXIgbmFtZSBtdXN0IGJlIGF2YWlsYWJsZSBhcyBhbiBlbnZpcm9ubWVudCB2YXJpYWJsZSB1bmRlciBBREFQVEVSX05BTUUnLFxuICAgIClcbiAgfVxuXG4gIGNvbnN0IGRvY2tlcmZpbGUgPSBhd2FpdCBnZW5lcmF0ZUZpbGVKU09OKHsgcHJlZml4LCBicmFuY2gsIHVzZUxhdGVzdCB9LCB7IGNvbnRleHQ6ICcuJyB9KVxuICBjb25zdCBhZGFwdGVycyA9IE9iamVjdC5lbnRyaWVzKGRvY2tlcmZpbGUuc2VydmljZXMpXG4gICAgLmZpbHRlcigoW2tdKSA9PiBrID09PSBkZXNjb3BlZE5hbWUpXG4gICAgLm1hcCgoWywgdl0pID0+IHYuaW1hZ2UpXG5cbiAgaWYgKGFkYXB0ZXJzLmxlbmd0aCA9PT0gMCkge1xuICAgIHRocm93IEVycm9yKFxuICAgICAgYEludmFsaWQgYWRhcHRlciBuYW1lIHByb3ZpZGVkLCBubyBtYXRjaGluZyBhZGFwdGVyIG5hbWUgZm91bmQgaW4gd29ya3NwYWNlIHBhY2thZ2VzLmAsXG4gICAgKVxuICB9XG4gIGlmIChhZGFwdGVycy5sZW5ndGggPiAxKSB7XG4gICAgdGhyb3cgRXJyb3IoXG4gICAgICBgQW1iaWd1b3VzIGFkYXB0ZXIgbmFtZSBwcm92aWRlZCwgbXVsdGlwbGUgbWF0Y2hpbmcgYWRhcHRlciBuYW1lcyBmb3VuZCBpbiB3b3Jrc3BhY2UgcGFja2FnZXMuYCxcbiAgICApXG4gIH1cblxuICByZXR1cm4gYWRhcHRlcnNbMF1cbn1cbiJdfQ==

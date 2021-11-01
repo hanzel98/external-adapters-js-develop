@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.execute = exports.inputParameters = exports.supportedEndpoints = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.supportedEndpoints = ['forex'];
+exports.inputParameters = {
+    base: ['base', 'from', 'coin'],
+    quote: ['quote', 'to', 'market'],
+};
+const execute = async (request) => {
+    const validator = new ea_bootstrap_1.Validator(request, exports.inputParameters);
+    if (validator.error)
+        throw validator.error;
+    throw Error('The NCFX adapter does not support making HTTP requests. Make sure WS is enabled in the adapter configuration.');
+};
+exports.execute = execute;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZm9yZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvZW5kcG9pbnQvZm9yZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsMERBQW1EO0FBR3RDLFFBQUEsa0JBQWtCLEdBQUcsQ0FBQyxPQUFPLENBQUMsQ0FBQTtBQUU5QixRQUFBLGVBQWUsR0FBb0I7SUFDOUMsSUFBSSxFQUFFLENBQUMsTUFBTSxFQUFFLE1BQU0sRUFBRSxNQUFNLENBQUM7SUFDOUIsS0FBSyxFQUFFLENBQUMsT0FBTyxFQUFFLElBQUksRUFBRSxRQUFRLENBQUM7Q0FDakMsQ0FBQTtBQUVNLE1BQU0sT0FBTyxHQUE4QixLQUFLLEVBQUUsT0FBTyxFQUFFLEVBQUU7SUFDbEUsTUFBTSxTQUFTLEdBQUcsSUFBSSx3QkFBUyxDQUFDLE9BQU8sRUFBRSx1QkFBZSxDQUFDLENBQUE7SUFDekQsSUFBSSxTQUFTLENBQUMsS0FBSztRQUFFLE1BQU0sU0FBUyxDQUFDLEtBQUssQ0FBQTtJQUMxQyxNQUFNLEtBQUssQ0FDVCwrR0FBK0csQ0FDaEgsQ0FBQTtBQUNILENBQUMsQ0FBQTtBQU5ZLFFBQUEsT0FBTyxXQU1uQiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFZhbGlkYXRvciB9IGZyb20gJ0BjaGFpbmxpbmsvZWEtYm9vdHN0cmFwJ1xuaW1wb3J0IHsgQ29uZmlnLCBFeGVjdXRlV2l0aENvbmZpZywgSW5wdXRQYXJhbWV0ZXJzIH0gZnJvbSAnQGNoYWlubGluay90eXBlcydcblxuZXhwb3J0IGNvbnN0IHN1cHBvcnRlZEVuZHBvaW50cyA9IFsnZm9yZXgnXVxuXG5leHBvcnQgY29uc3QgaW5wdXRQYXJhbWV0ZXJzOiBJbnB1dFBhcmFtZXRlcnMgPSB7XG4gIGJhc2U6IFsnYmFzZScsICdmcm9tJywgJ2NvaW4nXSxcbiAgcXVvdGU6IFsncXVvdGUnLCAndG8nLCAnbWFya2V0J10sXG59XG5cbmV4cG9ydCBjb25zdCBleGVjdXRlOiBFeGVjdXRlV2l0aENvbmZpZzxDb25maWc+ID0gYXN5bmMgKHJlcXVlc3QpID0+IHtcbiAgY29uc3QgdmFsaWRhdG9yID0gbmV3IFZhbGlkYXRvcihyZXF1ZXN0LCBpbnB1dFBhcmFtZXRlcnMpXG4gIGlmICh2YWxpZGF0b3IuZXJyb3IpIHRocm93IHZhbGlkYXRvci5lcnJvclxuICB0aHJvdyBFcnJvcihcbiAgICAnVGhlIE5DRlggYWRhcHRlciBkb2VzIG5vdCBzdXBwb3J0IG1ha2luZyBIVFRQIHJlcXVlc3RzLiBNYWtlIHN1cmUgV1MgaXMgZW5hYmxlZCBpbiB0aGUgYWRhcHRlciBjb25maWd1cmF0aW9uLicsXG4gIClcbn1cbiJdfQ==

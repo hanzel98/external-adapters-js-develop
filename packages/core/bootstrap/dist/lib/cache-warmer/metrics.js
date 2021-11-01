@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.cache_warmer_count = void 0;
+const tslib_1 = require("tslib");
+const client = tslib_1.__importStar(require("prom-client"));
+exports.cache_warmer_count = new client.Gauge({
+    name: 'cache_warmer_get_count',
+    help: 'The number of cache warmers running',
+    labelNames: ['isBatched'],
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWV0cmljcy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9saWIvY2FjaGUtd2FybWVyL21ldHJpY3MudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7OztBQUFBLDREQUFxQztBQUV4QixRQUFBLGtCQUFrQixHQUFHLElBQUksTUFBTSxDQUFDLEtBQUssQ0FBQztJQUNqRCxJQUFJLEVBQUUsd0JBQXdCO0lBQzlCLElBQUksRUFBRSxxQ0FBcUM7SUFDM0MsVUFBVSxFQUFFLENBQUMsV0FBVyxDQUFVO0NBQ25DLENBQUMsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCAqIGFzIGNsaWVudCBmcm9tICdwcm9tLWNsaWVudCdcblxuZXhwb3J0IGNvbnN0IGNhY2hlX3dhcm1lcl9jb3VudCA9IG5ldyBjbGllbnQuR2F1Z2Uoe1xuICBuYW1lOiAnY2FjaGVfd2FybWVyX2dldF9jb3VudCcsXG4gIGhlbHA6ICdUaGUgbnVtYmVyIG9mIGNhY2hlIHdhcm1lcnMgcnVubmluZycsXG4gIGxhYmVsTmFtZXM6IFsnaXNCYXRjaGVkJ10gYXMgY29uc3QsXG59KVxuIl19

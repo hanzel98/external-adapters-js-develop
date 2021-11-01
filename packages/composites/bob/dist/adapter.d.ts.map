@@ -1,0 +1,1 @@
+{"version":3,"file":"adapter.d.ts","sourceRoot":"","sources":["../src/adapter.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,iBAAiB,EAAE,MAAM,kBAAkB,CAAA;AAEpE,OAAO,EAAgC,cAAc,EAAE,MAAM,UAAU,CAAA;AAQvE,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,cAAc,CAiBrD,CAAA;AAED,eAAO,MAAM,WAAW,EAAE,cAAc,CAAC,cAAc,CAEtD,CAAA"}

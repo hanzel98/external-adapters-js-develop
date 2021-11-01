@@ -1,0 +1,1 @@
+{"version":3,"file":"function.d.ts","sourceRoot":"","sources":["../../src/endpoint/function.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AACrE,OAAO,EAAE,MAAM,EAAE,MAAM,WAAW,CAAA;AAGlC,eAAO,MAAM,kBAAkB,UAAe,CAAA;AAE9C,eAAO,MAAM,eAAe,EAAE,eAI7B,CAAA;AAED,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CA6B7C,CAAA"}

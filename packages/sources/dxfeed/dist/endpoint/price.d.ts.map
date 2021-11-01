@@ -1,0 +1,1 @@
+{"version":3,"file":"price.d.ts","sourceRoot":"","sources":["../../src/endpoint/price.ts"],"names":[],"mappings":"AACA,OAAO,EACL,iBAAiB,EACjB,MAAM,EACN,eAAe,EAGhB,MAAM,kBAAkB,CAAA;AAGzB,eAAO,MAAM,kBAAkB,UAAwC,CAAA;AACvE,eAAO,MAAM,qBAAqB;;;GAAiC,CAAA;AAInE,eAAO,MAAM,eAAe,EAAE,eAE7B,CAAA;AAMD,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAsC7C,CAAA"}

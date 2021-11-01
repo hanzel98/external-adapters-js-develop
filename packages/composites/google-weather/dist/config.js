@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeConfig = exports.DEFAULT_DATASET = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.DEFAULT_DATASET = 'bigquery-public-data.noaa_gsod';
+const makeConfig = (prefix = '') => ({
+    dataset: ea_bootstrap_1.util.getEnv('DATASET', prefix) || exports.DEFAULT_DATASET,
+    api: {},
+});
+exports.makeConfig = makeConfig;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwREFBOEM7QUFHakMsUUFBQSxlQUFlLEdBQUcsZ0NBQWdDLENBQUE7QUFReEQsTUFBTSxVQUFVLEdBQUcsQ0FBQyxNQUFNLEdBQUcsRUFBRSxFQUFVLEVBQUUsQ0FBQyxDQUFDO0lBQ2xELE9BQU8sRUFBRSxtQkFBSSxDQUFDLE1BQU0sQ0FBQyxTQUFTLEVBQUUsTUFBTSxDQUFDLElBQUksdUJBQWU7SUFDMUQsR0FBRyxFQUFFLEVBQUU7Q0FDUixDQUFDLENBQUE7QUFIVyxRQUFBLFVBQVUsY0FHckIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyB1dGlsIH0gZnJvbSAnQGNoYWlubGluay9lYS1ib290c3RyYXAnXG5pbXBvcnQgeyBSZXF1ZXN0Q29uZmlnIH0gZnJvbSAnQGNoYWlubGluay90eXBlcydcblxuZXhwb3J0IGNvbnN0IERFRkFVTFRfREFUQVNFVCA9ICdiaWdxdWVyeS1wdWJsaWMtZGF0YS5ub2FhX2dzb2QnXG5cbmV4cG9ydCB0eXBlIENvbmZpZyA9IHtcbiAgZGF0YXNldDogc3RyaW5nXG5cbiAgYXBpOiBSZXF1ZXN0Q29uZmlnXG59XG5cbmV4cG9ydCBjb25zdCBtYWtlQ29uZmlnID0gKHByZWZpeCA9ICcnKTogQ29uZmlnID0+ICh7XG4gIGRhdGFzZXQ6IHV0aWwuZ2V0RW52KCdEQVRBU0VUJywgcHJlZml4KSB8fCBERUZBVUxUX0RBVEFTRVQsXG4gIGFwaToge30sXG59KVxuIl19

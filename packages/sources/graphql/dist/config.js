@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeConfig = exports.NAME = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.NAME = 'GRAPHQL';
+const makeConfig = (prefix) => {
+    const config = ea_bootstrap_1.Requester.getDefaultConfig(prefix);
+    config.api.method = 'post';
+    return config;
+};
+exports.makeConfig = makeConfig;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwREFBbUQ7QUFHdEMsUUFBQSxJQUFJLEdBQUcsU0FBUyxDQUFBO0FBRXRCLE1BQU0sVUFBVSxHQUFHLENBQUMsTUFBZSxFQUFVLEVBQUU7SUFDcEQsTUFBTSxNQUFNLEdBQUcsd0JBQVMsQ0FBQyxnQkFBZ0IsQ0FBQyxNQUFNLENBQUMsQ0FBQTtJQUNqRCxNQUFNLENBQUMsR0FBRyxDQUFDLE1BQU0sR0FBRyxNQUFNLENBQUE7SUFDMUIsT0FBTyxNQUFNLENBQUE7QUFDZixDQUFDLENBQUE7QUFKWSxRQUFBLFVBQVUsY0FJdEIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBSZXF1ZXN0ZXIgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IENvbmZpZyB9IGZyb20gJ0BjaGFpbmxpbmsvdHlwZXMnXG5cbmV4cG9ydCBjb25zdCBOQU1FID0gJ0dSQVBIUUwnXG5cbmV4cG9ydCBjb25zdCBtYWtlQ29uZmlnID0gKHByZWZpeD86IHN0cmluZyk6IENvbmZpZyA9PiB7XG4gIGNvbnN0IGNvbmZpZyA9IFJlcXVlc3Rlci5nZXREZWZhdWx0Q29uZmlnKHByZWZpeClcbiAgY29uZmlnLmFwaS5tZXRob2QgPSAncG9zdCdcbiAgcmV0dXJuIGNvbmZpZ1xufVxuIl19

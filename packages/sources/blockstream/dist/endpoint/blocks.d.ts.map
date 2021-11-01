@@ -1,0 +1,1 @@
+{"version":3,"file":"blocks.d.ts","sourceRoot":"","sources":["../../src/endpoint/blocks.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AAI7E,eAAO,MAAM,kBAAkB,UAA2B,CAAA;AAE1D,eAAO,MAAM,mBAAmB;;;CAG/B,CAAA;AAED,eAAO,MAAM,eAAe,EAAE,eAE7B,CAAA;AAED,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAkB7C,CAAA"}

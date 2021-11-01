@@ -1,0 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@actions/core");
+const lib_1 = require("./lib");
+async function main() {
+    core_1.setOutput('image_name', await lib_1.generateImageName());
+}
+main();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvZ2VuZXJhdGUtaW1hZ2UtbmFtZS9pbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLHdDQUF5QztBQUN6QywrQkFBeUM7QUFFekMsS0FBSyxVQUFVLElBQUk7SUFDakIsZ0JBQVMsQ0FBQyxZQUFZLEVBQUUsTUFBTSx1QkFBaUIsRUFBRSxDQUFDLENBQUE7QUFDcEQsQ0FBQztBQUNELElBQUksRUFBRSxDQUFBIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgc2V0T3V0cHV0IH0gZnJvbSAnQGFjdGlvbnMvY29yZSdcbmltcG9ydCB7IGdlbmVyYXRlSW1hZ2VOYW1lIH0gZnJvbSAnLi9saWInXG5cbmFzeW5jIGZ1bmN0aW9uIG1haW4oKSB7XG4gIHNldE91dHB1dCgnaW1hZ2VfbmFtZScsIGF3YWl0IGdlbmVyYXRlSW1hZ2VOYW1lKCkpXG59XG5tYWluKClcbiJdfQ==

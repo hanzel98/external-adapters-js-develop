@@ -1,0 +1,1 @@
+{"version":3,"file":"globalmarketcap.d.ts","sourceRoot":"","sources":["../../src/endpoint/globalmarketcap.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AAE7E,eAAO,MAAM,kBAAkB,UAAsB,CAAA;AAErD,eAAO,MAAM,eAAe,EAAE,eAAoB,CAAA;AAIlD,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAmB7C,CAAA"}

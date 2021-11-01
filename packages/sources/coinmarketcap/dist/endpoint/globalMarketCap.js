@@ -1,0 +1,32 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.execute = exports.inputParameters = exports.supportedEndpoints = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.supportedEndpoints = ['globalmarketcap'];
+exports.inputParameters = {
+    market: ['market', 'to', 'quote'],
+};
+const execute = async (request, _, config) => {
+    const validator = new ea_bootstrap_1.Validator(request, exports.inputParameters);
+    if (validator.error)
+        throw validator.error;
+    const jobRunID = validator.validated.id;
+    const convert = validator.validated.data.market.toUpperCase();
+    const url = '/global-metrics/quotes/latest';
+    const params = { convert };
+    const options = {
+        ...config.api,
+        url,
+        params,
+    };
+    const response = await ea_bootstrap_1.Requester.request(options);
+    response.data.result = ea_bootstrap_1.Requester.validateResultNumber(response.data, [
+        'data',
+        'quote',
+        convert,
+        'total_market_cap',
+    ]);
+    return ea_bootstrap_1.Requester.success(jobRunID, response, config.verbose);
+};
+exports.execute = execute;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2xvYmFsTWFya2V0Q2FwLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2VuZHBvaW50L2dsb2JhbE1hcmtldENhcC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwREFBOEQ7QUFHakQsUUFBQSxrQkFBa0IsR0FBRyxDQUFDLGlCQUFpQixDQUFDLENBQUE7QUFFeEMsUUFBQSxlQUFlLEdBQW9CO0lBQzlDLE1BQU0sRUFBRSxDQUFDLFFBQVEsRUFBRSxJQUFJLEVBQUUsT0FBTyxDQUFDO0NBQ2xDLENBQUE7QUFFTSxNQUFNLE9BQU8sR0FBOEIsS0FBSyxFQUFFLE9BQU8sRUFBRSxDQUFDLEVBQUUsTUFBTSxFQUFFLEVBQUU7SUFDN0UsTUFBTSxTQUFTLEdBQUcsSUFBSSx3QkFBUyxDQUFDLE9BQU8sRUFBRSx1QkFBZSxDQUFDLENBQUE7SUFDekQsSUFBSSxTQUFTLENBQUMsS0FBSztRQUFFLE1BQU0sU0FBUyxDQUFDLEtBQUssQ0FBQTtJQUUxQyxNQUFNLFFBQVEsR0FBRyxTQUFTLENBQUMsU0FBUyxDQUFDLEVBQUUsQ0FBQTtJQUV2QyxNQUFNLE9BQU8sR0FBRyxTQUFTLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsV0FBVyxFQUFFLENBQUE7SUFDN0QsTUFBTSxHQUFHLEdBQUcsK0JBQStCLENBQUE7SUFFM0MsTUFBTSxNQUFNLEdBQUcsRUFBRSxPQUFPLEVBQUUsQ0FBQTtJQUUxQixNQUFNLE9BQU8sR0FBRztRQUNkLEdBQUcsTUFBTSxDQUFDLEdBQUc7UUFDYixHQUFHO1FBQ0gsTUFBTTtLQUNQLENBQUE7SUFDRCxNQUFNLFFBQVEsR0FBRyxNQUFNLHdCQUFTLENBQUMsT0FBTyxDQUFDLE9BQU8sQ0FBQyxDQUFBO0lBQ2pELFFBQVEsQ0FBQyxJQUFJLENBQUMsTUFBTSxHQUFHLHdCQUFTLENBQUMsb0JBQW9CLENBQUMsUUFBUSxDQUFDLElBQUksRUFBRTtRQUNuRSxNQUFNO1FBQ04sT0FBTztRQUNQLE9BQU87UUFDUCxrQkFBa0I7S0FDbkIsQ0FBQyxDQUFBO0lBQ0YsT0FBTyx3QkFBUyxDQUFDLE9BQU8sQ0FBQyxRQUFRLEVBQUUsUUFBUSxFQUFFLE1BQU0sQ0FBQyxPQUFPLENBQUMsQ0FBQTtBQUM5RCxDQUFDLENBQUE7QUF4QlksUUFBQSxPQUFPLFdBd0JuQiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFJlcXVlc3RlciwgVmFsaWRhdG9yIH0gZnJvbSAnQGNoYWlubGluay9lYS1ib290c3RyYXAnXG5pbXBvcnQgeyBFeGVjdXRlV2l0aENvbmZpZywgQ29uZmlnLCBJbnB1dFBhcmFtZXRlcnMgfSBmcm9tICdAY2hhaW5saW5rL3R5cGVzJ1xuXG5leHBvcnQgY29uc3Qgc3VwcG9ydGVkRW5kcG9pbnRzID0gWydnbG9iYWxtYXJrZXRjYXAnXVxuXG5leHBvcnQgY29uc3QgaW5wdXRQYXJhbWV0ZXJzOiBJbnB1dFBhcmFtZXRlcnMgPSB7XG4gIG1hcmtldDogWydtYXJrZXQnLCAndG8nLCAncXVvdGUnXSxcbn1cblxuZXhwb3J0IGNvbnN0IGV4ZWN1dGU6IEV4ZWN1dGVXaXRoQ29uZmlnPENvbmZpZz4gPSBhc3luYyAocmVxdWVzdCwgXywgY29uZmlnKSA9PiB7XG4gIGNvbnN0IHZhbGlkYXRvciA9IG5ldyBWYWxpZGF0b3IocmVxdWVzdCwgaW5wdXRQYXJhbWV0ZXJzKVxuICBpZiAodmFsaWRhdG9yLmVycm9yKSB0aHJvdyB2YWxpZGF0b3IuZXJyb3JcblxuICBjb25zdCBqb2JSdW5JRCA9IHZhbGlkYXRvci52YWxpZGF0ZWQuaWRcblxuICBjb25zdCBjb252ZXJ0ID0gdmFsaWRhdG9yLnZhbGlkYXRlZC5kYXRhLm1hcmtldC50b1VwcGVyQ2FzZSgpXG4gIGNvbnN0IHVybCA9ICcvZ2xvYmFsLW1ldHJpY3MvcXVvdGVzL2xhdGVzdCdcblxuICBjb25zdCBwYXJhbXMgPSB7IGNvbnZlcnQgfVxuXG4gIGNvbnN0IG9wdGlvbnMgPSB7XG4gICAgLi4uY29uZmlnLmFwaSxcbiAgICB1cmwsXG4gICAgcGFyYW1zLFxuICB9XG4gIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgUmVxdWVzdGVyLnJlcXVlc3Qob3B0aW9ucylcbiAgcmVzcG9uc2UuZGF0YS5yZXN1bHQgPSBSZXF1ZXN0ZXIudmFsaWRhdGVSZXN1bHROdW1iZXIocmVzcG9uc2UuZGF0YSwgW1xuICAgICdkYXRhJyxcbiAgICAncXVvdGUnLFxuICAgIGNvbnZlcnQsXG4gICAgJ3RvdGFsX21hcmtldF9jYXAnLFxuICBdKVxuICByZXR1cm4gUmVxdWVzdGVyLnN1Y2Nlc3Moam9iUnVuSUQsIHJlc3BvbnNlLCBjb25maWcudmVyYm9zZSlcbn1cbiJdfQ==

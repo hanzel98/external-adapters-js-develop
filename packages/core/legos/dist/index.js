@@ -1,0 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const sources_1 = tslib_1.__importDefault(require("./sources"));
+const sourceNames = Object.values(sources_1.default).map((s) => s.NAME);
+exports.default = { sources: sourceNames };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsZ0VBQStCO0FBRS9CLE1BQU0sV0FBVyxHQUFHLE1BQU0sQ0FBQyxNQUFNLENBQUMsaUJBQU8sQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsRUFBRSxFQUFFLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxDQUFBO0FBRTdELGtCQUFlLEVBQUUsT0FBTyxFQUFFLFdBQVcsRUFBRSxDQUFBIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHNvdXJjZXMgZnJvbSAnLi9zb3VyY2VzJ1xuXG5jb25zdCBzb3VyY2VOYW1lcyA9IE9iamVjdC52YWx1ZXMoc291cmNlcykubWFwKChzKSA9PiBzLk5BTUUpXG5cbmV4cG9ydCBkZWZhdWx0IHsgc291cmNlczogc291cmNlTmFtZXMgfVxuIl19

@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeExecute = exports.execute = void 0;
+const tslib_1 = require("tslib");
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const config_1 = require("./config");
+const endpoints = tslib_1.__importStar(require("./endpoint"));
+const execute = async (request, context, config) => {
+    // TODO: Readd marketCap endpoint
+    return ea_bootstrap_1.Builder.buildSelector(request, context, config, endpoints);
+};
+exports.execute = execute;
+const makeExecute = (config) => {
+    return async (request, context) => exports.execute(request, context, config || config_1.makeConfig());
+};
+exports.makeExecute = makeExecute;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYWRhcHRlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy9hZGFwdGVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7QUFBQSwwREFBaUQ7QUFFakQscUNBQXFDO0FBQ3JDLDhEQUF1QztBQUVoQyxNQUFNLE9BQU8sR0FBOEIsS0FBSyxFQUFFLE9BQU8sRUFBRSxPQUFPLEVBQUUsTUFBTSxFQUFFLEVBQUU7SUFDbkYsaUNBQWlDO0lBQ2pDLE9BQU8sc0JBQU8sQ0FBQyxhQUFhLENBQUMsT0FBTyxFQUFFLE9BQU8sRUFBRSxNQUFNLEVBQUUsU0FBUyxDQUFDLENBQUE7QUFDbkUsQ0FBQyxDQUFBO0FBSFksUUFBQSxPQUFPLFdBR25CO0FBRU0sTUFBTSxXQUFXLEdBQTJCLENBQUMsTUFBTSxFQUFFLEVBQUU7SUFDNUQsT0FBTyxLQUFLLEVBQUUsT0FBTyxFQUFFLE9BQU8sRUFBRSxFQUFFLENBQUMsZUFBTyxDQUFDLE9BQU8sRUFBRSxPQUFPLEVBQUUsTUFBTSxJQUFJLG1CQUFVLEVBQUUsQ0FBQyxDQUFBO0FBQ3RGLENBQUMsQ0FBQTtBQUZZLFFBQUEsV0FBVyxlQUV2QiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEJ1aWxkZXIgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IEV4ZWN1dGVXaXRoQ29uZmlnLCBFeGVjdXRlRmFjdG9yeSwgQ29uZmlnIH0gZnJvbSAnQGNoYWlubGluay90eXBlcydcbmltcG9ydCB7IG1ha2VDb25maWcgfSBmcm9tICcuL2NvbmZpZydcbmltcG9ydCAqIGFzIGVuZHBvaW50cyBmcm9tICcuL2VuZHBvaW50J1xuXG5leHBvcnQgY29uc3QgZXhlY3V0ZTogRXhlY3V0ZVdpdGhDb25maWc8Q29uZmlnPiA9IGFzeW5jIChyZXF1ZXN0LCBjb250ZXh0LCBjb25maWcpID0+IHtcbiAgLy8gVE9ETzogUmVhZGQgbWFya2V0Q2FwIGVuZHBvaW50XG4gIHJldHVybiBCdWlsZGVyLmJ1aWxkU2VsZWN0b3IocmVxdWVzdCwgY29udGV4dCwgY29uZmlnLCBlbmRwb2ludHMpXG59XG5cbmV4cG9ydCBjb25zdCBtYWtlRXhlY3V0ZTogRXhlY3V0ZUZhY3Rvcnk8Q29uZmlnPiA9IChjb25maWcpID0+IHtcbiAgcmV0dXJuIGFzeW5jIChyZXF1ZXN0LCBjb250ZXh0KSA9PiBleGVjdXRlKHJlcXVlc3QsIGNvbnRleHQsIGNvbmZpZyB8fCBtYWtlQ29uZmlnKCkpXG59XG4iXX0=

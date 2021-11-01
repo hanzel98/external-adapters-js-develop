@@ -1,0 +1,1 @@
+{"version":3,"file":"balance.d.ts","sourceRoot":"","sources":["../../src/endpoint/balance.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,MAAM,EAAW,cAAc,EAAE,MAAM,kBAAkB,CAAA;AAGlE,eAAO,MAAM,kBAAkB,UAAc,CAAA;AAE7C,eAAO,MAAM,eAAe,4CAA0B,CAAA;AAkCtD,eAAO,MAAM,WAAW,EAAE,cAAc,CAAC,MAAM,CACQ,CAAA"}

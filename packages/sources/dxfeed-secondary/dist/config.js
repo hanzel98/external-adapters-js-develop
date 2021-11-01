@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeConfig = exports.NAME = void 0;
+const tslib_1 = require("tslib");
+const dxfeed = tslib_1.__importStar(require("@chainlink/dxfeed-adapter"));
+exports.NAME = 'DXFEED_SECONDARY';
+const makeConfig = (prefix) => {
+    const baseConfig = dxfeed.makeConfig(prefix);
+    baseConfig.name = exports.NAME;
+    return baseConfig;
+};
+exports.makeConfig = makeConfig;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7O0FBQUEsMEVBQW1EO0FBR3RDLFFBQUEsSUFBSSxHQUFHLGtCQUFrQixDQUFBO0FBRS9CLE1BQU0sVUFBVSxHQUFHLENBQUMsTUFBZSxFQUFVLEVBQUU7SUFDcEQsTUFBTSxVQUFVLEdBQUcsTUFBTSxDQUFDLFVBQVUsQ0FBQyxNQUFNLENBQUMsQ0FBQTtJQUM1QyxVQUFVLENBQUMsSUFBSSxHQUFHLFlBQUksQ0FBQTtJQUN0QixPQUFPLFVBQVUsQ0FBQTtBQUNuQixDQUFDLENBQUE7QUFKWSxRQUFBLFVBQVUsY0FJdEIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgKiBhcyBkeGZlZWQgZnJvbSAnQGNoYWlubGluay9keGZlZWQtYWRhcHRlcidcbmltcG9ydCB7IENvbmZpZyB9IGZyb20gJ0BjaGFpbmxpbmsvdHlwZXMnXG5cbmV4cG9ydCBjb25zdCBOQU1FID0gJ0RYRkVFRF9TRUNPTkRBUlknXG5cbmV4cG9ydCBjb25zdCBtYWtlQ29uZmlnID0gKHByZWZpeD86IHN0cmluZyk6IENvbmZpZyA9PiB7XG4gIGNvbnN0IGJhc2VDb25maWcgPSBkeGZlZWQubWFrZUNvbmZpZyhwcmVmaXgpXG4gIGJhc2VDb25maWcubmFtZSA9IE5BTUVcbiAgcmV0dXJuIGJhc2VDb25maWdcbn1cbiJdfQ==

@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.redis_commands_sent_count = exports.CMD_SENT_STATUS = exports.redis_retries_count = exports.redis_connections_open = void 0;
+const tslib_1 = require("tslib");
+const client = tslib_1.__importStar(require("prom-client"));
+exports.redis_connections_open = new client.Counter({
+    name: 'redis_connections_open',
+    help: 'The number of redis connections that are open',
+});
+exports.redis_retries_count = new client.Counter({
+    name: 'redis_retries_count',
+    help: 'The number of retries that have been made to establish a redis connection',
+});
+var CMD_SENT_STATUS;
+(function (CMD_SENT_STATUS) {
+    CMD_SENT_STATUS["FAIL"] = "FAIL";
+    CMD_SENT_STATUS["SUCCESS"] = "SUCCESS";
+})(CMD_SENT_STATUS = exports.CMD_SENT_STATUS || (exports.CMD_SENT_STATUS = {}));
+exports.redis_commands_sent_count = new client.Counter({
+    name: 'redis_commands_sent_count',
+    help: 'The number of redis commands sent',
+    labelNames: ['status', 'function_name'],
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWV0cmljcy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3NyYy9saWIvY2FjaGUvcmVkaXMvbWV0cmljcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7O0FBQUEsNERBQXFDO0FBRXhCLFFBQUEsc0JBQXNCLEdBQUcsSUFBSSxNQUFNLENBQUMsT0FBTyxDQUFDO0lBQ3ZELElBQUksRUFBRSx3QkFBd0I7SUFDOUIsSUFBSSxFQUFFLCtDQUErQztDQUN0RCxDQUFDLENBQUE7QUFFVyxRQUFBLG1CQUFtQixHQUFHLElBQUksTUFBTSxDQUFDLE9BQU8sQ0FBQztJQUNwRCxJQUFJLEVBQUUscUJBQXFCO0lBQzNCLElBQUksRUFBRSwyRUFBMkU7Q0FDbEYsQ0FBQyxDQUFBO0FBRUYsSUFBWSxlQUdYO0FBSEQsV0FBWSxlQUFlO0lBQ3pCLGdDQUFhLENBQUE7SUFDYixzQ0FBbUIsQ0FBQTtBQUNyQixDQUFDLEVBSFcsZUFBZSxHQUFmLHVCQUFlLEtBQWYsdUJBQWUsUUFHMUI7QUFDWSxRQUFBLHlCQUF5QixHQUFHLElBQUksTUFBTSxDQUFDLE9BQU8sQ0FBQztJQUMxRCxJQUFJLEVBQUUsMkJBQTJCO0lBQ2pDLElBQUksRUFBRSxtQ0FBbUM7SUFDekMsVUFBVSxFQUFFLENBQUMsUUFBUSxFQUFFLGVBQWUsQ0FBQztDQUN4QyxDQUFDLENBQUEiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgKiBhcyBjbGllbnQgZnJvbSAncHJvbS1jbGllbnQnXG5cbmV4cG9ydCBjb25zdCByZWRpc19jb25uZWN0aW9uc19vcGVuID0gbmV3IGNsaWVudC5Db3VudGVyKHtcbiAgbmFtZTogJ3JlZGlzX2Nvbm5lY3Rpb25zX29wZW4nLFxuICBoZWxwOiAnVGhlIG51bWJlciBvZiByZWRpcyBjb25uZWN0aW9ucyB0aGF0IGFyZSBvcGVuJyxcbn0pXG5cbmV4cG9ydCBjb25zdCByZWRpc19yZXRyaWVzX2NvdW50ID0gbmV3IGNsaWVudC5Db3VudGVyKHtcbiAgbmFtZTogJ3JlZGlzX3JldHJpZXNfY291bnQnLFxuICBoZWxwOiAnVGhlIG51bWJlciBvZiByZXRyaWVzIHRoYXQgaGF2ZSBiZWVuIG1hZGUgdG8gZXN0YWJsaXNoIGEgcmVkaXMgY29ubmVjdGlvbicsXG59KVxuXG5leHBvcnQgZW51bSBDTURfU0VOVF9TVEFUVVMge1xuICBGQUlMID0gJ0ZBSUwnLFxuICBTVUNDRVNTID0gJ1NVQ0NFU1MnLFxufVxuZXhwb3J0IGNvbnN0IHJlZGlzX2NvbW1hbmRzX3NlbnRfY291bnQgPSBuZXcgY2xpZW50LkNvdW50ZXIoe1xuICBuYW1lOiAncmVkaXNfY29tbWFuZHNfc2VudF9jb3VudCcsXG4gIGhlbHA6ICdUaGUgbnVtYmVyIG9mIHJlZGlzIGNvbW1hbmRzIHNlbnQnLFxuICBsYWJlbE5hbWVzOiBbJ3N0YXR1cycsICdmdW5jdGlvbl9uYW1lJ10sXG59KVxuIl19

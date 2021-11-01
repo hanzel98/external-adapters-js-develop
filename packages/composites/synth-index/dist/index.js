@@ -1,0 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.server = exports.NAME = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const adapter_1 = require("./adapter");
+exports.NAME = 'SYNTH-INDEX';
+exports.server = ea_bootstrap_1.expose(exports.NAME, adapter_1.makeExecute()).server;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsMERBQWdEO0FBQ2hELHVDQUF1QztBQUUxQixRQUFBLElBQUksR0FBRyxhQUFhLENBQUE7QUFDcEIsUUFBQSxNQUFNLEdBQUcscUJBQU0sQ0FBQyxZQUFJLEVBQUUscUJBQVcsRUFBRSxDQUFDLENBQUMsTUFBTSxDQUFBIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgZXhwb3NlIH0gZnJvbSAnQGNoYWlubGluay9lYS1ib290c3RyYXAnXG5pbXBvcnQgeyBtYWtlRXhlY3V0ZSB9IGZyb20gJy4vYWRhcHRlcidcblxuZXhwb3J0IGNvbnN0IE5BTUUgPSAnU1lOVEgtSU5ERVgnXG5leHBvcnQgY29uc3Qgc2VydmVyID0gZXhwb3NlKE5BTUUsIG1ha2VFeGVjdXRlKCkpLnNlcnZlclxuIl19

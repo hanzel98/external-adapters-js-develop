@@ -1,0 +1,1 @@
+{"version":3,"file":"global.d.ts","sourceRoot":"","sources":["../../src/endpoint/global.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,EAAE,eAAe,EAAE,mBAAmB,EAAE,MAAM,kBAAkB,CAAA;AAElG,eAAO,MAAM,kBAAkB,UAA6C,CAAA;AAE5E,eAAO,MAAM,mBAAmB,EAAE,mBAIjC,CAAA;AAED,eAAO,MAAM,eAAe,EAAE,eAI7B,CAAA;AAED,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAkB7C,CAAA"}

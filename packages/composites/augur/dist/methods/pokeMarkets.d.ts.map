@@ -1,0 +1,1 @@
+{"version":3,"file":"pokeMarkets.d.ts","sourceRoot":"","sources":["../../src/methods/pokeMarkets.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,cAAc,EAAE,eAAe,EAAE,cAAc,EAAE,MAAM,kBAAkB,CAAA;AAIlF,OAAO,EAAE,MAAM,EAAE,MAAM,WAAW,CAAA;AA8ClC,wBAAgB,sBAAsB,IAAI,MAAM,CAM/C;AAsBD,wBAAsB,OAAO,CAC3B,KAAK,EAAE,cAAc,EACrB,OAAO,EAAE,cAAc,EACvB,MAAM,EAAE,MAAM,GACb,OAAO,CAAC,eAAe,CAAC,CAY1B"}

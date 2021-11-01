@@ -1,0 +1,3 @@
+export declare const getTokenQuery = "\n    query($symbol: String) {\n        tokens(\n            where:{\n            symbol: $symbol\n            }, \n            orderBy: tradeVolumeUSD, orderDirection:desc, first: 1\n        ) {\n        id,\n        name\n        }\n    }\n";
+export declare const getPairQuery = "\n    query($token0ID: String, $token1ID: String) {\n        pairs(where: {\n            token0: $token0ID,\n            token1: $token1ID\n        }) {\n            token0Price,\n            token1Price\n        }\n    }\n";
+//# sourceMappingURL=graphqlQueries.d.ts.map

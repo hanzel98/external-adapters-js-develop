@@ -1,0 +1,47 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.execute = exports.inputParameters = exports.supportedEndpoints = void 0;
+const tslib_1 = require("tslib");
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const client = tslib_1.__importStar(require("@cardano-ogmios/client"));
+const config_1 = require("../config");
+const ethers_1 = require("ethers");
+exports.supportedEndpoints = ['balance'];
+exports.inputParameters = {
+    addresses: ['addresses', 'result'],
+};
+const execute = async (request, _, config) => {
+    const validator = new ea_bootstrap_1.Validator(request, exports.inputParameters);
+    if (validator.error)
+        throw validator.error;
+    const jobRunID = validator.validated.id;
+    const addresses = validator.validated.data.addresses;
+    if (addresses.length === 0) {
+        throw new ea_bootstrap_1.AdapterError({ jobRunID, statusCode: 400, message: 'Addresses cannot be empty' });
+    }
+    const result = await getAddressBalances(addresses, config.api.baseWsUrl, config.rpcPort || config_1.DEFAULT_RPC_PORT);
+    return {
+        jobRunID,
+        result,
+        data: {
+            result,
+        },
+        statusCode: 200,
+    };
+};
+exports.execute = execute;
+const getAddressBalances = async (addresses, wsUrl, port) => {
+    const utxo = await client.utxo(addresses, {
+        connection: {
+            port,
+            host: wsUrl,
+            protocol: 'ws',
+        },
+    });
+    // TODO:  Figure out error that shows up whenever we try to pull in Ogmios V4.1.0
+    // The issue here is that we are using the V3.2.0 client, which has a different response type than
+    // what is being returned from the API.  The API returns v4.1.0.  This code works ut casting utxo is ugly.
+    const balanceAsBigNum = utxo.reduce((total, [_, out]) => total.add(ethers_1.BigNumber.from(out.value.coins)), ethers_1.BigNumber.from(0));
+    return balanceAsBigNum.toString();
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYmFsYW5jZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9lbmRwb2ludC9iYWxhbmNlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7QUFBQSwwREFBaUU7QUFHakUsdUVBQWdEO0FBQ2hELHNDQUE0QztBQUM1QyxtQ0FBa0M7QUFFckIsUUFBQSxrQkFBa0IsR0FBRyxDQUFDLFNBQVMsQ0FBQyxDQUFBO0FBUWhDLFFBQUEsZUFBZSxHQUFvQjtJQUM5QyxTQUFTLEVBQUUsQ0FBQyxXQUFXLEVBQUUsUUFBUSxDQUFDO0NBQ25DLENBQUE7QUFFTSxNQUFNLE9BQU8sR0FBOEIsS0FBSyxFQUFFLE9BQU8sRUFBRSxDQUFDLEVBQUUsTUFBTSxFQUFFLEVBQUU7SUFDN0UsTUFBTSxTQUFTLEdBQUcsSUFBSSx3QkFBUyxDQUFDLE9BQU8sRUFBRSx1QkFBZSxDQUFDLENBQUE7SUFDekQsSUFBSSxTQUFTLENBQUMsS0FBSztRQUFFLE1BQU0sU0FBUyxDQUFDLEtBQUssQ0FBQTtJQUUxQyxNQUFNLFFBQVEsR0FBRyxTQUFTLENBQUMsU0FBUyxDQUFDLEVBQUUsQ0FBQTtJQUN2QyxNQUFNLFNBQVMsR0FBRyxTQUFTLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUE7SUFDcEQsSUFBSSxTQUFTLENBQUMsTUFBTSxLQUFLLENBQUMsRUFBRTtRQUMxQixNQUFNLElBQUksMkJBQVksQ0FBQyxFQUFFLFFBQVEsRUFBRSxVQUFVLEVBQUUsR0FBRyxFQUFFLE9BQU8sRUFBRSwyQkFBMkIsRUFBRSxDQUFDLENBQUE7S0FDNUY7SUFDRCxNQUFNLE1BQU0sR0FBRyxNQUFNLGtCQUFrQixDQUNyQyxTQUFTLEVBQ1QsTUFBTSxDQUFDLEdBQUcsQ0FBQyxTQUFTLEVBQ3BCLE1BQU0sQ0FBQyxPQUFPLElBQUkseUJBQWdCLENBQ25DLENBQUE7SUFFRCxPQUFPO1FBQ0wsUUFBUTtRQUNSLE1BQU07UUFDTixJQUFJLEVBQUU7WUFDSixNQUFNO1NBQ1A7UUFDRCxVQUFVLEVBQUUsR0FBRztLQUNoQixDQUFBO0FBQ0gsQ0FBQyxDQUFBO0FBdkJZLFFBQUEsT0FBTyxXQXVCbkI7QUFFRCxNQUFNLGtCQUFrQixHQUFHLEtBQUssRUFDOUIsU0FBb0IsRUFDcEIsS0FBYSxFQUNiLElBQVksRUFDSyxFQUFFO0lBQ25CLE1BQU0sSUFBSSxHQUFHLE1BQU0sTUFBTSxDQUFDLElBQUksQ0FBQyxTQUFTLEVBQUU7UUFDeEMsVUFBVSxFQUFFO1lBQ1YsSUFBSTtZQUNKLElBQUksRUFBRSxLQUFLO1lBQ1gsUUFBUSxFQUFFLElBQUk7U0FDZjtLQUNGLENBQUMsQ0FBQTtJQUVGLGlGQUFpRjtJQUNqRixrR0FBa0c7SUFDbEcsMEdBQTBHO0lBQzFHLE1BQU0sZUFBZSxHQUFJLElBQXdCLENBQUMsTUFBTSxDQUN0RCxDQUFDLEtBQUssRUFBRSxDQUFDLENBQUMsRUFBRSxHQUFHLENBQUMsRUFBRSxFQUFFLENBQUMsS0FBSyxDQUFDLEdBQUcsQ0FBQyxrQkFBUyxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsS0FBSyxDQUFDLEtBQUssQ0FBQyxDQUFDLEVBQy9ELGtCQUFTLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUNsQixDQUFBO0lBQ0QsT0FBTyxlQUFlLENBQUMsUUFBUSxFQUFFLENBQUE7QUFDbkMsQ0FBQyxDQUFBIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQWRhcHRlckVycm9yLCBWYWxpZGF0b3IgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IENvbmZpZywgRXhlY3V0ZVdpdGhDb25maWcsIElucHV0UGFyYW1ldGVycyB9IGZyb20gJ0BjaGFpbmxpbmsvdHlwZXMnXG5pbXBvcnQgeyBBZGRyZXNzLCBVdHhvIH0gZnJvbSAnQGNhcmRhbm8tb2dtaW9zL3NjaGVtYSdcbmltcG9ydCAqIGFzIGNsaWVudCBmcm9tICdAY2FyZGFuby1vZ21pb3MvY2xpZW50J1xuaW1wb3J0IHsgREVGQVVMVF9SUENfUE9SVCB9IGZyb20gJy4uL2NvbmZpZydcbmltcG9ydCB7IEJpZ051bWJlciB9IGZyb20gJ2V0aGVycydcblxuZXhwb3J0IGNvbnN0IHN1cHBvcnRlZEVuZHBvaW50cyA9IFsnYmFsYW5jZSddXG5cbmV4cG9ydCBpbnRlcmZhY2UgUmVzcG9uc2VTY2hlbWEge1xuICBkYXRhOiB7XG4gICAgYmFsYW5jZTogbnVtYmVyXG4gIH1cbn1cblxuZXhwb3J0IGNvbnN0IGlucHV0UGFyYW1ldGVyczogSW5wdXRQYXJhbWV0ZXJzID0ge1xuICBhZGRyZXNzZXM6IFsnYWRkcmVzc2VzJywgJ3Jlc3VsdCddLFxufVxuXG5leHBvcnQgY29uc3QgZXhlY3V0ZTogRXhlY3V0ZVdpdGhDb25maWc8Q29uZmlnPiA9IGFzeW5jIChyZXF1ZXN0LCBfLCBjb25maWcpID0+IHtcbiAgY29uc3QgdmFsaWRhdG9yID0gbmV3IFZhbGlkYXRvcihyZXF1ZXN0LCBpbnB1dFBhcmFtZXRlcnMpXG4gIGlmICh2YWxpZGF0b3IuZXJyb3IpIHRocm93IHZhbGlkYXRvci5lcnJvclxuXG4gIGNvbnN0IGpvYlJ1bklEID0gdmFsaWRhdG9yLnZhbGlkYXRlZC5pZFxuICBjb25zdCBhZGRyZXNzZXMgPSB2YWxpZGF0b3IudmFsaWRhdGVkLmRhdGEuYWRkcmVzc2VzXG4gIGlmIChhZGRyZXNzZXMubGVuZ3RoID09PSAwKSB7XG4gICAgdGhyb3cgbmV3IEFkYXB0ZXJFcnJvcih7IGpvYlJ1bklELCBzdGF0dXNDb2RlOiA0MDAsIG1lc3NhZ2U6ICdBZGRyZXNzZXMgY2Fubm90IGJlIGVtcHR5JyB9KVxuICB9XG4gIGNvbnN0IHJlc3VsdCA9IGF3YWl0IGdldEFkZHJlc3NCYWxhbmNlcyhcbiAgICBhZGRyZXNzZXMsXG4gICAgY29uZmlnLmFwaS5iYXNlV3NVcmwsXG4gICAgY29uZmlnLnJwY1BvcnQgfHwgREVGQVVMVF9SUENfUE9SVCxcbiAgKVxuXG4gIHJldHVybiB7XG4gICAgam9iUnVuSUQsXG4gICAgcmVzdWx0LFxuICAgIGRhdGE6IHtcbiAgICAgIHJlc3VsdCxcbiAgICB9LFxuICAgIHN0YXR1c0NvZGU6IDIwMCxcbiAgfVxufVxuXG5jb25zdCBnZXRBZGRyZXNzQmFsYW5jZXMgPSBhc3luYyAoXG4gIGFkZHJlc3NlczogQWRkcmVzc1tdLFxuICB3c1VybDogc3RyaW5nLFxuICBwb3J0OiBudW1iZXIsXG4pOiBQcm9taXNlPHN0cmluZz4gPT4ge1xuICBjb25zdCB1dHhvID0gYXdhaXQgY2xpZW50LnV0eG8oYWRkcmVzc2VzLCB7XG4gICAgY29ubmVjdGlvbjoge1xuICAgICAgcG9ydCxcbiAgICAgIGhvc3Q6IHdzVXJsLFxuICAgICAgcHJvdG9jb2w6ICd3cycsXG4gICAgfSxcbiAgfSlcblxuICAvLyBUT0RPOiAgRmlndXJlIG91dCBlcnJvciB0aGF0IHNob3dzIHVwIHdoZW5ldmVyIHdlIHRyeSB0byBwdWxsIGluIE9nbWlvcyBWNC4xLjBcbiAgLy8gVGhlIGlzc3VlIGhlcmUgaXMgdGhhdCB3ZSBhcmUgdXNpbmcgdGhlIFYzLjIuMCBjbGllbnQsIHdoaWNoIGhhcyBhIGRpZmZlcmVudCByZXNwb25zZSB0eXBlIHRoYW5cbiAgLy8gd2hhdCBpcyBiZWluZyByZXR1cm5lZCBmcm9tIHRoZSBBUEkuICBUaGUgQVBJIHJldHVybnMgdjQuMS4wLiAgVGhpcyBjb2RlIHdvcmtzIHV0IGNhc3RpbmcgdXR4byBpcyB1Z2x5LlxuICBjb25zdCBiYWxhbmNlQXNCaWdOdW0gPSAodXR4byBhcyB1bmtub3duIGFzIFV0eG8pLnJlZHVjZShcbiAgICAodG90YWwsIFtfLCBvdXRdKSA9PiB0b3RhbC5hZGQoQmlnTnVtYmVyLmZyb20ob3V0LnZhbHVlLmNvaW5zKSksXG4gICAgQmlnTnVtYmVyLmZyb20oMCksXG4gIClcbiAgcmV0dXJuIGJhbGFuY2VBc0JpZ051bS50b1N0cmluZygpXG59XG4iXX0=

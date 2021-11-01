@@ -1,0 +1,30 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.execute = exports.inputParameters = exports.supportedEndpoints = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const config_1 = require("../config");
+exports.supportedEndpoints = ['eod-close', 'eod'];
+exports.inputParameters = {
+    base: ['base', 'from', 'coin', 'asset', 'symbol'],
+};
+const execute = async (request, _, config) => {
+    const validator = new ea_bootstrap_1.Validator(request, exports.inputParameters);
+    if (validator.error)
+        throw validator.error;
+    const jobRunID = validator.validated.id;
+    const base = validator.overrideSymbol(config_1.NAME);
+    const url = `stock/${base.toUpperCase()}/quote`;
+    const params = {
+        token: config.apiKey,
+    };
+    const reqConfig = {
+        ...config.api,
+        params,
+        url,
+    };
+    const response = await ea_bootstrap_1.Requester.request(reqConfig);
+    response.data.result = ea_bootstrap_1.Requester.validateResultNumber(response.data, ['close']);
+    return ea_bootstrap_1.Requester.success(jobRunID, response, config.verbose);
+};
+exports.execute = execute;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZW9kLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2VuZHBvaW50L2VvZC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwREFBOEQ7QUFFOUQsc0NBQStDO0FBRWxDLFFBQUEsa0JBQWtCLEdBQUcsQ0FBQyxXQUFXLEVBQUUsS0FBSyxDQUFDLENBQUE7QUFFekMsUUFBQSxlQUFlLEdBQW9CO0lBQzlDLElBQUksRUFBRSxDQUFDLE1BQU0sRUFBRSxNQUFNLEVBQUUsTUFBTSxFQUFFLE9BQU8sRUFBRSxRQUFRLENBQUM7Q0FDbEQsQ0FBQTtBQUVNLE1BQU0sT0FBTyxHQUE4QixLQUFLLEVBQUUsT0FBTyxFQUFFLENBQUMsRUFBRSxNQUFNLEVBQUUsRUFBRTtJQUM3RSxNQUFNLFNBQVMsR0FBRyxJQUFJLHdCQUFTLENBQUMsT0FBTyxFQUFFLHVCQUFlLENBQUMsQ0FBQTtJQUN6RCxJQUFJLFNBQVMsQ0FBQyxLQUFLO1FBQUUsTUFBTSxTQUFTLENBQUMsS0FBSyxDQUFBO0lBRTFDLE1BQU0sUUFBUSxHQUFHLFNBQVMsQ0FBQyxTQUFTLENBQUMsRUFBRSxDQUFBO0lBQ3ZDLE1BQU0sSUFBSSxHQUFHLFNBQVMsQ0FBQyxjQUFjLENBQUMsYUFBVyxDQUFXLENBQUE7SUFDNUQsTUFBTSxHQUFHLEdBQUcsU0FBUyxJQUFJLENBQUMsV0FBVyxFQUFFLFFBQVEsQ0FBQTtJQUUvQyxNQUFNLE1BQU0sR0FBRztRQUNiLEtBQUssRUFBRSxNQUFNLENBQUMsTUFBTTtLQUNyQixDQUFBO0lBRUQsTUFBTSxTQUFTLEdBQUc7UUFDaEIsR0FBRyxNQUFNLENBQUMsR0FBRztRQUNiLE1BQU07UUFDTixHQUFHO0tBQ0osQ0FBQTtJQUVELE1BQU0sUUFBUSxHQUFHLE1BQU0sd0JBQVMsQ0FBQyxPQUFPLENBQUMsU0FBUyxDQUFDLENBQUE7SUFDbkQsUUFBUSxDQUFDLElBQUksQ0FBQyxNQUFNLEdBQUcsd0JBQVMsQ0FBQyxvQkFBb0IsQ0FBQyxRQUFRLENBQUMsSUFBSSxFQUFFLENBQUMsT0FBTyxDQUFDLENBQUMsQ0FBQTtJQUUvRSxPQUFPLHdCQUFTLENBQUMsT0FBTyxDQUFDLFFBQVEsRUFBRSxRQUFRLEVBQUUsTUFBTSxDQUFDLE9BQU8sQ0FBQyxDQUFBO0FBQzlELENBQUMsQ0FBQTtBQXRCWSxRQUFBLE9BQU8sV0FzQm5CIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgUmVxdWVzdGVyLCBWYWxpZGF0b3IgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IEV4ZWN1dGVXaXRoQ29uZmlnLCBDb25maWcsIElucHV0UGFyYW1ldGVycyB9IGZyb20gJ0BjaGFpbmxpbmsvdHlwZXMnXG5pbXBvcnQgeyBOQU1FIGFzIEFkYXB0ZXJOYW1lIH0gZnJvbSAnLi4vY29uZmlnJ1xuXG5leHBvcnQgY29uc3Qgc3VwcG9ydGVkRW5kcG9pbnRzID0gWydlb2QtY2xvc2UnLCAnZW9kJ11cblxuZXhwb3J0IGNvbnN0IGlucHV0UGFyYW1ldGVyczogSW5wdXRQYXJhbWV0ZXJzID0ge1xuICBiYXNlOiBbJ2Jhc2UnLCAnZnJvbScsICdjb2luJywgJ2Fzc2V0JywgJ3N5bWJvbCddLFxufVxuXG5leHBvcnQgY29uc3QgZXhlY3V0ZTogRXhlY3V0ZVdpdGhDb25maWc8Q29uZmlnPiA9IGFzeW5jIChyZXF1ZXN0LCBfLCBjb25maWcpID0+IHtcbiAgY29uc3QgdmFsaWRhdG9yID0gbmV3IFZhbGlkYXRvcihyZXF1ZXN0LCBpbnB1dFBhcmFtZXRlcnMpXG4gIGlmICh2YWxpZGF0b3IuZXJyb3IpIHRocm93IHZhbGlkYXRvci5lcnJvclxuXG4gIGNvbnN0IGpvYlJ1bklEID0gdmFsaWRhdG9yLnZhbGlkYXRlZC5pZFxuICBjb25zdCBiYXNlID0gdmFsaWRhdG9yLm92ZXJyaWRlU3ltYm9sKEFkYXB0ZXJOYW1lKSBhcyBzdHJpbmdcbiAgY29uc3QgdXJsID0gYHN0b2NrLyR7YmFzZS50b1VwcGVyQ2FzZSgpfS9xdW90ZWBcblxuICBjb25zdCBwYXJhbXMgPSB7XG4gICAgdG9rZW46IGNvbmZpZy5hcGlLZXksXG4gIH1cblxuICBjb25zdCByZXFDb25maWcgPSB7XG4gICAgLi4uY29uZmlnLmFwaSxcbiAgICBwYXJhbXMsXG4gICAgdXJsLFxuICB9XG5cbiAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBSZXF1ZXN0ZXIucmVxdWVzdChyZXFDb25maWcpXG4gIHJlc3BvbnNlLmRhdGEucmVzdWx0ID0gUmVxdWVzdGVyLnZhbGlkYXRlUmVzdWx0TnVtYmVyKHJlc3BvbnNlLmRhdGEsIFsnY2xvc2UnXSlcblxuICByZXR1cm4gUmVxdWVzdGVyLnN1Y2Nlc3Moam9iUnVuSUQsIHJlc3BvbnNlLCBjb25maWcudmVyYm9zZSlcbn1cbiJdfQ==

@@ -1,0 +1,32 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getImpl = exports.getPriceDataProvider = exports.PriceDataProvider = void 0;
+const tslib_1 = require("tslib");
+// TODO: use all price providers from @chainlink/ea
+const finnhub_adapter_1 = tslib_1.__importDefault(require("@chainlink/finnhub-adapter"));
+const fcsapi_adapter_1 = tslib_1.__importDefault(require("@chainlink/fcsapi-adapter"));
+var PriceDataProvider;
+(function (PriceDataProvider) {
+    PriceDataProvider["Finnhub"] = "finnhub";
+    PriceDataProvider["FCS_API"] = "fcsapi";
+})(PriceDataProvider = exports.PriceDataProvider || (exports.PriceDataProvider = {}));
+const isPriceDataProvider = (envVar) => Object.values(PriceDataProvider).includes(envVar);
+const getPriceDataProvider = () => {
+    const priceDataProvider = process.env.PRICE_ADAPTER;
+    return isPriceDataProvider(priceDataProvider)
+        ? priceDataProvider
+        : undefined;
+};
+exports.getPriceDataProvider = getPriceDataProvider;
+const getImpl = (type) => {
+    switch (type) {
+        case PriceDataProvider.Finnhub:
+            return finnhub_adapter_1.default.makeExecute();
+        case PriceDataProvider.FCS_API:
+            return fcsapi_adapter_1.default.makeExecute();
+        default:
+            throw Error(`Unknown price data provider adapter type: ${type}`);
+    }
+};
+exports.getImpl = getImpl;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvcHJpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7OztBQUNBLG1EQUFtRDtBQUNuRCx5RkFBZ0Q7QUFDaEQsdUZBQThDO0FBRTlDLElBQVksaUJBR1g7QUFIRCxXQUFZLGlCQUFpQjtJQUMzQix3Q0FBbUIsQ0FBQTtJQUNuQix1Q0FBa0IsQ0FBQTtBQUNwQixDQUFDLEVBSFcsaUJBQWlCLEdBQWpCLHlCQUFpQixLQUFqQix5QkFBaUIsUUFHNUI7QUFFRCxNQUFNLG1CQUFtQixHQUFHLENBQUMsTUFBZSxFQUErQixFQUFFLENBQzNFLE1BQU0sQ0FBQyxNQUFNLENBQUMsaUJBQWlCLENBQUMsQ0FBQyxRQUFRLENBQUMsTUFBYSxDQUFDLENBQUE7QUFFbkQsTUFBTSxvQkFBb0IsR0FBRyxHQUFrQyxFQUFFO0lBQ3RFLE1BQU0saUJBQWlCLEdBQUcsT0FBTyxDQUFDLEdBQUcsQ0FBQyxhQUFhLENBQUE7SUFDbkQsT0FBTyxtQkFBbUIsQ0FBQyxpQkFBaUIsQ0FBQztRQUMzQyxDQUFDLENBQUUsaUJBQXVDO1FBQzFDLENBQUMsQ0FBQyxTQUFTLENBQUE7QUFDZixDQUFDLENBQUE7QUFMWSxRQUFBLG9CQUFvQix3QkFLaEM7QUFFTSxNQUFNLE9BQU8sR0FBRyxDQUFDLElBQXdCLEVBQVcsRUFBRTtJQUMzRCxRQUFRLElBQUksRUFBRTtRQUNaLEtBQUssaUJBQWlCLENBQUMsT0FBTztZQUM1QixPQUFPLHlCQUFPLENBQUMsV0FBVyxFQUFFLENBQUE7UUFDOUIsS0FBSyxpQkFBaUIsQ0FBQyxPQUFPO1lBQzVCLE9BQU8sd0JBQU0sQ0FBQyxXQUFXLEVBQUUsQ0FBQTtRQUM3QjtZQUNFLE1BQU0sS0FBSyxDQUFDLDZDQUE2QyxJQUFJLEVBQUUsQ0FBQyxDQUFBO0tBQ25FO0FBQ0gsQ0FBQyxDQUFBO0FBVFksUUFBQSxPQUFPLFdBU25CIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRXhlY3V0ZSB9IGZyb20gJ0BjaGFpbmxpbmsvdHlwZXMnXG4vLyBUT0RPOiB1c2UgYWxsIHByaWNlIHByb3ZpZGVycyBmcm9tIEBjaGFpbmxpbmsvZWFcbmltcG9ydCBmaW5uaHViIGZyb20gJ0BjaGFpbmxpbmsvZmlubmh1Yi1hZGFwdGVyJ1xuaW1wb3J0IGZjc2FwaSBmcm9tICdAY2hhaW5saW5rL2Zjc2FwaS1hZGFwdGVyJ1xuXG5leHBvcnQgZW51bSBQcmljZURhdGFQcm92aWRlciB7XG4gIEZpbm5odWIgPSAnZmlubmh1YicsXG4gIEZDU19BUEkgPSAnZmNzYXBpJyxcbn1cblxuY29uc3QgaXNQcmljZURhdGFQcm92aWRlciA9IChlbnZWYXI/OiBzdHJpbmcpOiBlbnZWYXIgaXMgUHJpY2VEYXRhUHJvdmlkZXIgPT5cbiAgT2JqZWN0LnZhbHVlcyhQcmljZURhdGFQcm92aWRlcikuaW5jbHVkZXMoZW52VmFyIGFzIGFueSlcblxuZXhwb3J0IGNvbnN0IGdldFByaWNlRGF0YVByb3ZpZGVyID0gKCk6IFByaWNlRGF0YVByb3ZpZGVyIHwgdW5kZWZpbmVkID0+IHtcbiAgY29uc3QgcHJpY2VEYXRhUHJvdmlkZXIgPSBwcm9jZXNzLmVudi5QUklDRV9BREFQVEVSXG4gIHJldHVybiBpc1ByaWNlRGF0YVByb3ZpZGVyKHByaWNlRGF0YVByb3ZpZGVyKVxuICAgID8gKHByaWNlRGF0YVByb3ZpZGVyIGFzIFByaWNlRGF0YVByb3ZpZGVyKVxuICAgIDogdW5kZWZpbmVkXG59XG5cbmV4cG9ydCBjb25zdCBnZXRJbXBsID0gKHR5cGU/OiBQcmljZURhdGFQcm92aWRlcik6IEV4ZWN1dGUgPT4ge1xuICBzd2l0Y2ggKHR5cGUpIHtcbiAgICBjYXNlIFByaWNlRGF0YVByb3ZpZGVyLkZpbm5odWI6XG4gICAgICByZXR1cm4gZmlubmh1Yi5tYWtlRXhlY3V0ZSgpXG4gICAgY2FzZSBQcmljZURhdGFQcm92aWRlci5GQ1NfQVBJOlxuICAgICAgcmV0dXJuIGZjc2FwaS5tYWtlRXhlY3V0ZSgpXG4gICAgZGVmYXVsdDpcbiAgICAgIHRocm93IEVycm9yKGBVbmtub3duIHByaWNlIGRhdGEgcHJvdmlkZXIgYWRhcHRlciB0eXBlOiAke3R5cGV9YClcbiAgfVxufVxuIl19

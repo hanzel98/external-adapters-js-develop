@@ -1,0 +1,68 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.execute = exports.inputParameters = exports.endpointResultPaths = exports.supportedEndpoints = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.supportedEndpoints = ['us'];
+exports.endpointResultPaths = {
+    us: 'death',
+};
+exports.inputParameters = {
+    resultPath: false,
+    date: false,
+};
+const validDate = (date) => {
+    if (date) {
+        if (isNaN(Number(date)))
+            return false;
+        if (date.length != 8)
+            return false;
+    }
+    return true;
+};
+const findDay = (payload, date) => {
+    if (!date)
+        return payload[0];
+    // All historical dates are given, find the the correct one
+    for (const index in payload) {
+        if (payload[index].date === Number(date)) {
+            return payload[index];
+        }
+        // Response body is sorted by descending data. If we see an earlier date we know our result doesn't exist.
+        if (payload[index].date < Number(date)) {
+            return null;
+        }
+    }
+    return null;
+};
+const execute = async (request, _, config) => {
+    const validator = new ea_bootstrap_1.Validator(request, exports.inputParameters);
+    if (validator.error)
+        throw validator.error;
+    const jobRunID = validator.validated.id;
+    const date = validator.validated.data.date;
+    const resultPath = validator.validated.data.resultPath;
+    if (!validDate(date))
+        throw new ea_bootstrap_1.AdapterError({
+            jobRunID,
+            message: 'Invalid date format',
+            statusCode: 400,
+        });
+    const suffix = date ? 'daily' : 'current';
+    const url = `us/${suffix}.json`;
+    const options = {
+        ...config.api,
+        url,
+    };
+    const response = await ea_bootstrap_1.Requester.request(options);
+    const day = findDay(response.data, date);
+    if (!day)
+        throw new ea_bootstrap_1.AdapterError({
+            jobRunID,
+            message: 'Date not found in response data',
+            statusCode: 400,
+        });
+    response.data.result = ea_bootstrap_1.Requester.validateResultNumber(day, [resultPath]);
+    return ea_bootstrap_1.Requester.success(jobRunID, response, config.verbose);
+};
+exports.execute = execute;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvZW5kcG9pbnQvdXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsMERBQTRFO0FBRy9ELFFBQUEsa0JBQWtCLEdBQUcsQ0FBQyxJQUFJLENBQUMsQ0FBQTtBQUUzQixRQUFBLG1CQUFtQixHQUFHO0lBQ2pDLEVBQUUsRUFBRSxPQUFPO0NBQ1osQ0FBQTtBQUVZLFFBQUEsZUFBZSxHQUFvQjtJQUM5QyxVQUFVLEVBQUUsS0FBSztJQUNqQixJQUFJLEVBQUUsS0FBSztDQUNaLENBQUE7QUFFRCxNQUFNLFNBQVMsR0FBRyxDQUFDLElBQVMsRUFBRSxFQUFFO0lBQzlCLElBQUksSUFBSSxFQUFFO1FBQ1IsSUFBSSxLQUFLLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxDQUFDO1lBQUUsT0FBTyxLQUFLLENBQUE7UUFDckMsSUFBSSxJQUFJLENBQUMsTUFBTSxJQUFJLENBQUM7WUFBRSxPQUFPLEtBQUssQ0FBQTtLQUNuQztJQUNELE9BQU8sSUFBSSxDQUFBO0FBQ2IsQ0FBQyxDQUFBO0FBRUQsTUFBTSxPQUFPLEdBQUcsQ0FBQyxPQUFZLEVBQUUsSUFBUyxFQUFFLEVBQUU7SUFDMUMsSUFBSSxDQUFDLElBQUk7UUFBRSxPQUFPLE9BQU8sQ0FBQyxDQUFDLENBQUMsQ0FBQTtJQUM1QiwyREFBMkQ7SUFDM0QsS0FBSyxNQUFNLEtBQUssSUFBSSxPQUFPLEVBQUU7UUFDM0IsSUFBSSxPQUFPLENBQUMsS0FBSyxDQUFDLENBQUMsSUFBSSxLQUFLLE1BQU0sQ0FBQyxJQUFJLENBQUMsRUFBRTtZQUN4QyxPQUFPLE9BQU8sQ0FBQyxLQUFLLENBQUMsQ0FBQTtTQUN0QjtRQUNELDBHQUEwRztRQUMxRyxJQUFJLE9BQU8sQ0FBQyxLQUFLLENBQUMsQ0FBQyxJQUFJLEdBQUcsTUFBTSxDQUFDLElBQUksQ0FBQyxFQUFFO1lBQ3RDLE9BQU8sSUFBSSxDQUFBO1NBQ1o7S0FDRjtJQUNELE9BQU8sSUFBSSxDQUFBO0FBQ2IsQ0FBQyxDQUFBO0FBRU0sTUFBTSxPQUFPLEdBQThCLEtBQUssRUFBRSxPQUFPLEVBQUUsQ0FBQyxFQUFFLE1BQU0sRUFBRSxFQUFFO0lBQzdFLE1BQU0sU0FBUyxHQUFHLElBQUksd0JBQVMsQ0FBQyxPQUFPLEVBQUUsdUJBQWUsQ0FBQyxDQUFBO0lBQ3pELElBQUksU0FBUyxDQUFDLEtBQUs7UUFBRSxNQUFNLFNBQVMsQ0FBQyxLQUFLLENBQUE7SUFFMUMsTUFBTSxRQUFRLEdBQUcsU0FBUyxDQUFDLFNBQVMsQ0FBQyxFQUFFLENBQUE7SUFDdkMsTUFBTSxJQUFJLEdBQUcsU0FBUyxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFBO0lBQzFDLE1BQU0sVUFBVSxHQUFHLFNBQVMsQ0FBQyxTQUFTLENBQUMsSUFBSSxDQUFDLFVBQVUsQ0FBQTtJQUN0RCxJQUFJLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQztRQUNsQixNQUFNLElBQUksMkJBQVksQ0FBQztZQUNyQixRQUFRO1lBQ1IsT0FBTyxFQUFFLHFCQUFxQjtZQUM5QixVQUFVLEVBQUUsR0FBRztTQUNoQixDQUFDLENBQUE7SUFDSixNQUFNLE1BQU0sR0FBRyxJQUFJLENBQUMsQ0FBQyxDQUFDLE9BQU8sQ0FBQyxDQUFDLENBQUMsU0FBUyxDQUFBO0lBQ3pDLE1BQU0sR0FBRyxHQUFHLE1BQU0sTUFBTSxPQUFPLENBQUE7SUFFL0IsTUFBTSxPQUFPLEdBQUc7UUFDZCxHQUFHLE1BQU0sQ0FBQyxHQUFHO1FBQ2IsR0FBRztLQUNKLENBQUE7SUFFRCxNQUFNLFFBQVEsR0FBRyxNQUFNLHdCQUFTLENBQUMsT0FBTyxDQUFDLE9BQU8sQ0FBQyxDQUFBO0lBQ2pELE1BQU0sR0FBRyxHQUFHLE9BQU8sQ0FBQyxRQUFRLENBQUMsSUFBSSxFQUFFLElBQUksQ0FBQyxDQUFBO0lBQ3hDLElBQUksQ0FBQyxHQUFHO1FBQ04sTUFBTSxJQUFJLDJCQUFZLENBQUM7WUFDckIsUUFBUTtZQUNSLE9BQU8sRUFBRSxpQ0FBaUM7WUFDMUMsVUFBVSxFQUFFLEdBQUc7U0FDaEIsQ0FBQyxDQUFBO0lBQ0osUUFBUSxDQUFDLElBQUksQ0FBQyxNQUFNLEdBQUcsd0JBQVMsQ0FBQyxvQkFBb0IsQ0FBQyxHQUFHLEVBQUUsQ0FBQyxVQUFVLENBQUMsQ0FBQyxDQUFBO0lBQ3hFLE9BQU8sd0JBQVMsQ0FBQyxPQUFPLENBQUMsUUFBUSxFQUFFLFFBQVEsRUFBRSxNQUFNLENBQUMsT0FBTyxDQUFDLENBQUE7QUFDOUQsQ0FBQyxDQUFBO0FBL0JZLFFBQUEsT0FBTyxXQStCbkIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBSZXF1ZXN0ZXIsIFZhbGlkYXRvciwgQWRhcHRlckVycm9yIH0gZnJvbSAnQGNoYWlubGluay9lYS1ib290c3RyYXAnXG5pbXBvcnQgeyBFeGVjdXRlV2l0aENvbmZpZywgQ29uZmlnLCBJbnB1dFBhcmFtZXRlcnMgfSBmcm9tICdAY2hhaW5saW5rL3R5cGVzJ1xuXG5leHBvcnQgY29uc3Qgc3VwcG9ydGVkRW5kcG9pbnRzID0gWyd1cyddXG5cbmV4cG9ydCBjb25zdCBlbmRwb2ludFJlc3VsdFBhdGhzID0ge1xuICB1czogJ2RlYXRoJyxcbn1cblxuZXhwb3J0IGNvbnN0IGlucHV0UGFyYW1ldGVyczogSW5wdXRQYXJhbWV0ZXJzID0ge1xuICByZXN1bHRQYXRoOiBmYWxzZSxcbiAgZGF0ZTogZmFsc2UsXG59XG5cbmNvbnN0IHZhbGlkRGF0ZSA9IChkYXRlOiBhbnkpID0+IHtcbiAgaWYgKGRhdGUpIHtcbiAgICBpZiAoaXNOYU4oTnVtYmVyKGRhdGUpKSkgcmV0dXJuIGZhbHNlXG4gICAgaWYgKGRhdGUubGVuZ3RoICE9IDgpIHJldHVybiBmYWxzZVxuICB9XG4gIHJldHVybiB0cnVlXG59XG5cbmNvbnN0IGZpbmREYXkgPSAocGF5bG9hZDogYW55LCBkYXRlOiBhbnkpID0+IHtcbiAgaWYgKCFkYXRlKSByZXR1cm4gcGF5bG9hZFswXVxuICAvLyBBbGwgaGlzdG9yaWNhbCBkYXRlcyBhcmUgZ2l2ZW4sIGZpbmQgdGhlIHRoZSBjb3JyZWN0IG9uZVxuICBmb3IgKGNvbnN0IGluZGV4IGluIHBheWxvYWQpIHtcbiAgICBpZiAocGF5bG9hZFtpbmRleF0uZGF0ZSA9PT0gTnVtYmVyKGRhdGUpKSB7XG4gICAgICByZXR1cm4gcGF5bG9hZFtpbmRleF1cbiAgICB9XG4gICAgLy8gUmVzcG9uc2UgYm9keSBpcyBzb3J0ZWQgYnkgZGVzY2VuZGluZyBkYXRhLiBJZiB3ZSBzZWUgYW4gZWFybGllciBkYXRlIHdlIGtub3cgb3VyIHJlc3VsdCBkb2Vzbid0IGV4aXN0LlxuICAgIGlmIChwYXlsb2FkW2luZGV4XS5kYXRlIDwgTnVtYmVyKGRhdGUpKSB7XG4gICAgICByZXR1cm4gbnVsbFxuICAgIH1cbiAgfVxuICByZXR1cm4gbnVsbFxufVxuXG5leHBvcnQgY29uc3QgZXhlY3V0ZTogRXhlY3V0ZVdpdGhDb25maWc8Q29uZmlnPiA9IGFzeW5jIChyZXF1ZXN0LCBfLCBjb25maWcpID0+IHtcbiAgY29uc3QgdmFsaWRhdG9yID0gbmV3IFZhbGlkYXRvcihyZXF1ZXN0LCBpbnB1dFBhcmFtZXRlcnMpXG4gIGlmICh2YWxpZGF0b3IuZXJyb3IpIHRocm93IHZhbGlkYXRvci5lcnJvclxuXG4gIGNvbnN0IGpvYlJ1bklEID0gdmFsaWRhdG9yLnZhbGlkYXRlZC5pZFxuICBjb25zdCBkYXRlID0gdmFsaWRhdG9yLnZhbGlkYXRlZC5kYXRhLmRhdGVcbiAgY29uc3QgcmVzdWx0UGF0aCA9IHZhbGlkYXRvci52YWxpZGF0ZWQuZGF0YS5yZXN1bHRQYXRoXG4gIGlmICghdmFsaWREYXRlKGRhdGUpKVxuICAgIHRocm93IG5ldyBBZGFwdGVyRXJyb3Ioe1xuICAgICAgam9iUnVuSUQsXG4gICAgICBtZXNzYWdlOiAnSW52YWxpZCBkYXRlIGZvcm1hdCcsXG4gICAgICBzdGF0dXNDb2RlOiA0MDAsXG4gICAgfSlcbiAgY29uc3Qgc3VmZml4ID0gZGF0ZSA/ICdkYWlseScgOiAnY3VycmVudCdcbiAgY29uc3QgdXJsID0gYHVzLyR7c3VmZml4fS5qc29uYFxuXG4gIGNvbnN0IG9wdGlvbnMgPSB7XG4gICAgLi4uY29uZmlnLmFwaSxcbiAgICB1cmwsXG4gIH1cblxuICBjb25zdCByZXNwb25zZSA9IGF3YWl0IFJlcXVlc3Rlci5yZXF1ZXN0KG9wdGlvbnMpXG4gIGNvbnN0IGRheSA9IGZpbmREYXkocmVzcG9uc2UuZGF0YSwgZGF0ZSlcbiAgaWYgKCFkYXkpXG4gICAgdGhyb3cgbmV3IEFkYXB0ZXJFcnJvcih7XG4gICAgICBqb2JSdW5JRCxcbiAgICAgIG1lc3NhZ2U6ICdEYXRlIG5vdCBmb3VuZCBpbiByZXNwb25zZSBkYXRhJyxcbiAgICAgIHN0YXR1c0NvZGU6IDQwMCxcbiAgICB9KVxuICByZXNwb25zZS5kYXRhLnJlc3VsdCA9IFJlcXVlc3Rlci52YWxpZGF0ZVJlc3VsdE51bWJlcihkYXksIFtyZXN1bHRQYXRoXSlcbiAgcmV0dXJuIFJlcXVlc3Rlci5zdWNjZXNzKGpvYlJ1bklELCByZXNwb25zZSwgY29uZmlnLnZlcmJvc2UpXG59XG4iXX0=

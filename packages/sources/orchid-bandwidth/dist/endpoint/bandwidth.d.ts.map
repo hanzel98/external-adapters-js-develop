@@ -1,0 +1,1 @@
+{"version":3,"file":"bandwidth.d.ts","sourceRoot":"","sources":["../../src/endpoint/bandwidth.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AAE7E,eAAO,MAAM,kBAAkB,UAAgB,CAAA;AAE/C,eAAO,MAAM,eAAe,EAAE,eAAoB,CAAA;AAElD,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAc7C,CAAA"}

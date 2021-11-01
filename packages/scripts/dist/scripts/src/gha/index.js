@@ -1,0 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@actions/core");
+const lib_1 = require("./lib");
+async function main() {
+    core_1.setOutput('result', await lib_1.getJobMatrix());
+}
+main();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvZ2hhL2luZGV4LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsd0NBQXlDO0FBQ3pDLCtCQUFvQztBQUVwQyxLQUFLLFVBQVUsSUFBSTtJQUNqQixnQkFBUyxDQUFDLFFBQVEsRUFBRSxNQUFNLGtCQUFZLEVBQUUsQ0FBQyxDQUFBO0FBQzNDLENBQUM7QUFDRCxJQUFJLEVBQUUsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHNldE91dHB1dCB9IGZyb20gJ0BhY3Rpb25zL2NvcmUnXG5pbXBvcnQgeyBnZXRKb2JNYXRyaXggfSBmcm9tICcuL2xpYidcblxuYXN5bmMgZnVuY3Rpb24gbWFpbigpIHtcbiAgc2V0T3V0cHV0KCdyZXN1bHQnLCBhd2FpdCBnZXRKb2JNYXRyaXgoKSlcbn1cbm1haW4oKVxuIl19

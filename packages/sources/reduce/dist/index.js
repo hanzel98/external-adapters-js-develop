@@ -1,0 +1,6 @@
+"use strict";
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const adapter_1 = require("./adapter");
+const NAME = 'REDUCE';
+module.exports = { NAME, execute: adapter_1.execute, ...ea_bootstrap_1.expose(NAME, adapter_1.execute) };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLDBEQUFnRDtBQUNoRCx1Q0FBbUM7QUFFbkMsTUFBTSxJQUFJLEdBQUcsUUFBUSxDQUFBO0FBRXJCLGlCQUFTLEVBQUUsSUFBSSxFQUFFLE9BQU8sRUFBUCxpQkFBTyxFQUFFLEdBQUcscUJBQU0sQ0FBQyxJQUFJLEVBQUUsaUJBQU8sQ0FBQyxFQUFFLENBQUEiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBleHBvc2UgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IGV4ZWN1dGUgfSBmcm9tICcuL2FkYXB0ZXInXG5cbmNvbnN0IE5BTUUgPSAnUkVEVUNFJ1xuXG5leHBvcnQgPSB7IE5BTUUsIGV4ZWN1dGUsIC4uLmV4cG9zZShOQU1FLCBleGVjdXRlKSB9XG4iXX0=

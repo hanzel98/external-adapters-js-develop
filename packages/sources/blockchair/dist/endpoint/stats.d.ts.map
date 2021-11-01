@@ -1,0 +1,1 @@
+{"version":3,"file":"stats.d.ts","sourceRoot":"","sources":["../../src/endpoint/stats.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AAG7E,eAAO,MAAM,kBAAkB,UAAoC,CAAA;AAEnE,eAAO,MAAM,mBAAmB;;;;CAI/B,CAAA;AAED,eAAO,MAAM,eAAe,EAAE,eAG7B,CAAA;AAED,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAiB7C,CAAA"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"assets.d.ts","sourceRoot":"","sources":["../../src/endpoint/assets.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AAE7E,eAAO,MAAM,kBAAkB,UAA0B,CAAA;AAEzD,eAAO,MAAM,mBAAmB;;;CAG/B,CAAA;AAOD,eAAO,MAAM,eAAe,EAAE,eAG7B,CAAA;AAED,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAkB7C,CAAA"}

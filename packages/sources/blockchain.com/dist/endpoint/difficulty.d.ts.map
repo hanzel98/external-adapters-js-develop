@@ -1,0 +1,1 @@
+{"version":3,"file":"difficulty.d.ts","sourceRoot":"","sources":["../../src/endpoint/difficulty.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,MAAM,EAAE,iBAAiB,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AAG7E,eAAO,MAAM,kBAAkB,UAAiB,CAAA;AAEhD,eAAO,MAAM,eAAe,EAAE,eAAoB,CAAA;AAElD,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAgB7C,CAAA"}

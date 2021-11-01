@@ -1,0 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const lib_1 = require("./lib");
+lib_1.writeAllFlattenedSchemas();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvc2NoZW1hLWZsYXR0ZW4vaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSwrQkFBZ0Q7QUFDaEQsOEJBQXdCLEVBQUUsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHdyaXRlQWxsRmxhdHRlbmVkU2NoZW1hcyB9IGZyb20gJy4vbGliJ1xud3JpdGVBbGxGbGF0dGVuZWRTY2hlbWFzKClcbiJdfQ==

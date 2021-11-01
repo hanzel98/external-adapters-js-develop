@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeConfig = exports.DEFAULT_BASE_URL = exports.NAME = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.NAME = 'POA';
+exports.DEFAULT_BASE_URL = 'https://gasprice.poa.network/';
+const makeConfig = (prefix = '') => {
+    const config = ea_bootstrap_1.Requester.getDefaultConfig(prefix);
+    config.api.baseURL = config.api.baseURL || exports.DEFAULT_BASE_URL;
+    return config;
+};
+exports.makeConfig = makeConfig;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwREFBbUQ7QUFHdEMsUUFBQSxJQUFJLEdBQUcsS0FBSyxDQUFBO0FBRVosUUFBQSxnQkFBZ0IsR0FBRywrQkFBK0IsQ0FBQTtBQUV4RCxNQUFNLFVBQVUsR0FBRyxDQUFDLE1BQU0sR0FBRyxFQUFFLEVBQVUsRUFBRTtJQUNoRCxNQUFNLE1BQU0sR0FBRyx3QkFBUyxDQUFDLGdCQUFnQixDQUFDLE1BQU0sQ0FBQyxDQUFBO0lBQ2pELE1BQU0sQ0FBQyxHQUFHLENBQUMsT0FBTyxHQUFHLE1BQU0sQ0FBQyxHQUFHLENBQUMsT0FBTyxJQUFJLHdCQUFnQixDQUFBO0lBQzNELE9BQU8sTUFBTSxDQUFBO0FBQ2YsQ0FBQyxDQUFBO0FBSlksUUFBQSxVQUFVLGNBSXRCIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgUmVxdWVzdGVyIH0gZnJvbSAnQGNoYWlubGluay9lYS1ib290c3RyYXAnXG5pbXBvcnQgeyBDb25maWcgfSBmcm9tICdAY2hhaW5saW5rL3R5cGVzJ1xuXG5leHBvcnQgY29uc3QgTkFNRSA9ICdQT0EnXG5cbmV4cG9ydCBjb25zdCBERUZBVUxUX0JBU0VfVVJMID0gJ2h0dHBzOi8vZ2FzcHJpY2UucG9hLm5ldHdvcmsvJ1xuXG5leHBvcnQgY29uc3QgbWFrZUNvbmZpZyA9IChwcmVmaXggPSAnJyk6IENvbmZpZyA9PiB7XG4gIGNvbnN0IGNvbmZpZyA9IFJlcXVlc3Rlci5nZXREZWZhdWx0Q29uZmlnKHByZWZpeClcbiAgY29uZmlnLmFwaS5iYXNlVVJMID0gY29uZmlnLmFwaS5iYXNlVVJMIHx8IERFRkFVTFRfQkFTRV9VUkxcbiAgcmV0dXJuIGNvbmZpZ1xufVxuIl19

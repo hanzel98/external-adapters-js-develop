@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DEFAULT_RPC_URL = exports.DEFAULT_ENDPOINT = void 0;
+exports.DEFAULT_ENDPOINT = 'difficulty';
+exports.DEFAULT_RPC_URL = 'http://localhost:8332';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBYSxRQUFBLGdCQUFnQixHQUFHLFlBQVksQ0FBQTtBQUMvQixRQUFBLGVBQWUsR0FBRyx1QkFBdUIsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBjb25zdCBERUZBVUxUX0VORFBPSU5UID0gJ2RpZmZpY3VsdHknXG5leHBvcnQgY29uc3QgREVGQVVMVF9SUENfVVJMID0gJ2h0dHA6Ly9sb2NhbGhvc3Q6ODMzMidcbiJdfQ==

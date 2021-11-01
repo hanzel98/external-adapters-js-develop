@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeConfig = exports.DEFAULT_BASE_URL = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.DEFAULT_BASE_URL = 'http://localhost:8545';
+const makeConfig = (prefix) => {
+    const RPC_URL = ea_bootstrap_1.util.getEnv('RPC_URL', prefix);
+    return {
+        ...ea_bootstrap_1.Requester.getDefaultConfig(prefix),
+        RPC_URL,
+    };
+};
+exports.makeConfig = makeConfig;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwREFBeUQ7QUFPNUMsUUFBQSxnQkFBZ0IsR0FBRyx1QkFBdUIsQ0FBQTtBQUVoRCxNQUFNLFVBQVUsR0FBRyxDQUFDLE1BQWUsRUFBa0IsRUFBRTtJQUM1RCxNQUFNLE9BQU8sR0FBRyxtQkFBSSxDQUFDLE1BQU0sQ0FBQyxTQUFTLEVBQUUsTUFBTSxDQUFDLENBQUE7SUFDOUMsT0FBTztRQUNMLEdBQUcsd0JBQVMsQ0FBQyxnQkFBZ0IsQ0FBQyxNQUFNLENBQUM7UUFDckMsT0FBTztLQUNSLENBQUE7QUFDSCxDQUFDLENBQUE7QUFOWSxRQUFBLFVBQVUsY0FNdEIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBSZXF1ZXN0ZXIsIHV0aWwgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IENvbmZpZyB9IGZyb20gJ0BjaGFpbmxpbmsvdHlwZXMnXG5cbmV4cG9ydCBpbnRlcmZhY2UgRXh0ZW5kZWRDb25maWcgZXh0ZW5kcyBDb25maWcge1xuICBSUENfVVJMPzogc3RyaW5nXG59XG5cbmV4cG9ydCBjb25zdCBERUZBVUxUX0JBU0VfVVJMID0gJ2h0dHA6Ly9sb2NhbGhvc3Q6ODU0NSdcblxuZXhwb3J0IGNvbnN0IG1ha2VDb25maWcgPSAocHJlZml4Pzogc3RyaW5nKTogRXh0ZW5kZWRDb25maWcgPT4ge1xuICBjb25zdCBSUENfVVJMID0gdXRpbC5nZXRFbnYoJ1JQQ19VUkwnLCBwcmVmaXgpXG4gIHJldHVybiB7XG4gICAgLi4uUmVxdWVzdGVyLmdldERlZmF1bHRDb25maWcocHJlZml4KSxcbiAgICBSUENfVVJMLFxuICB9XG59XG4iXX0=

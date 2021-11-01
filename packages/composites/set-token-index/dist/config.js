@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeConfig = exports.DEFAULT_ENDPOINT = exports.NAME = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.NAME = 'SET_TOKEN_INDEX';
+exports.DEFAULT_ENDPOINT = 'token-index';
+const makeConfig = (prefix, network = 'mainnet') => {
+    return {
+        ...ea_bootstrap_1.Requester.getDefaultConfig(prefix),
+        rpcUrl: ea_bootstrap_1.util.getRequiredEnv('RPC_URL', prefix),
+        network,
+        defaultEndpoint: exports.DEFAULT_ENDPOINT,
+    };
+};
+exports.makeConfig = makeConfig;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwREFBeUQ7QUFHNUMsUUFBQSxJQUFJLEdBQUcsaUJBQWlCLENBQUE7QUFFeEIsUUFBQSxnQkFBZ0IsR0FBRyxhQUFhLENBQUE7QUFPdEMsTUFBTSxVQUFVLEdBQUcsQ0FBQyxNQUFlLEVBQUUsT0FBTyxHQUFHLFNBQVMsRUFBVSxFQUFFO0lBQ3pFLE9BQU87UUFDTCxHQUFHLHdCQUFTLENBQUMsZ0JBQWdCLENBQUMsTUFBTSxDQUFDO1FBQ3JDLE1BQU0sRUFBRSxtQkFBSSxDQUFDLGNBQWMsQ0FBQyxTQUFTLEVBQUUsTUFBTSxDQUFDO1FBQzlDLE9BQU87UUFDUCxlQUFlLEVBQUUsd0JBQWdCO0tBQ2xDLENBQUE7QUFDSCxDQUFDLENBQUE7QUFQWSxRQUFBLFVBQVUsY0FPdEIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBSZXF1ZXN0ZXIsIHV0aWwgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCAqIGFzIHR5cGVzIGZyb20gJ0BjaGFpbmxpbmsvdHlwZXMnXG5cbmV4cG9ydCBjb25zdCBOQU1FID0gJ1NFVF9UT0tFTl9JTkRFWCdcblxuZXhwb3J0IGNvbnN0IERFRkFVTFRfRU5EUE9JTlQgPSAndG9rZW4taW5kZXgnXG5cbmV4cG9ydCB0eXBlIENvbmZpZyA9IHR5cGVzLkNvbmZpZyAmIHtcbiAgcnBjVXJsOiBzdHJpbmdcbiAgbmV0d29yazogc3RyaW5nXG59XG5cbmV4cG9ydCBjb25zdCBtYWtlQ29uZmlnID0gKHByZWZpeD86IHN0cmluZywgbmV0d29yayA9ICdtYWlubmV0Jyk6IENvbmZpZyA9PiB7XG4gIHJldHVybiB7XG4gICAgLi4uUmVxdWVzdGVyLmdldERlZmF1bHRDb25maWcocHJlZml4KSxcbiAgICBycGNVcmw6IHV0aWwuZ2V0UmVxdWlyZWRFbnYoJ1JQQ19VUkwnLCBwcmVmaXgpLFxuICAgIG5ldHdvcmssXG4gICAgZGVmYXVsdEVuZHBvaW50OiBERUZBVUxUX0VORFBPSU5ULFxuICB9XG59XG4iXX0=

@@ -1,0 +1,6 @@
+"use strict";
+const adapter_1 = require("./adapter");
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const NAME = 'BOB';
+module.exports = { NAME, makeExecute: adapter_1.makeExecute, ...ea_bootstrap_1.expose(NAME, adapter_1.makeExecute()) };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLHVDQUF1QztBQUN2QywwREFBZ0Q7QUFFaEQsTUFBTSxJQUFJLEdBQUcsS0FBSyxDQUFBO0FBQ2xCLGlCQUFTLEVBQUUsSUFBSSxFQUFFLFdBQVcsRUFBWCxxQkFBVyxFQUFFLEdBQUcscUJBQU0sQ0FBQyxJQUFJLEVBQUUscUJBQVcsRUFBRSxDQUFDLEVBQUUsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IG1ha2VFeGVjdXRlIH0gZnJvbSAnLi9hZGFwdGVyJ1xuaW1wb3J0IHsgZXhwb3NlIH0gZnJvbSAnQGNoYWlubGluay9lYS1ib290c3RyYXAnXG5cbmNvbnN0IE5BTUUgPSAnQk9CJ1xuZXhwb3J0ID0geyBOQU1FLCBtYWtlRXhlY3V0ZSwgLi4uZXhwb3NlKE5BTUUsIG1ha2VFeGVjdXRlKCkpIH1cbiJdfQ==

@@ -94,7 +94,6 @@ const buildSelector = <C extends Config>(
   customParams?: InputParameters,
 ): Promise<AdapterResponse> => {
   Requester.logConfig(config)
-
   const apiEndpoint = selectEndpoint<C>(request, config, apiEndpoints, customParams)
 
   if (typeof apiEndpoint.execute === 'function') {

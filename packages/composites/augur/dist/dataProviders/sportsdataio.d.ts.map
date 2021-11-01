@@ -1,0 +1,1 @@
+{"version":3,"file":"sportsdataio.d.ts","sourceRoot":"","sources":["../../src/dataProviders/sportsdataio.ts"],"names":[],"mappings":"AACA,OAAO,EAAkB,OAAO,EAAE,MAAM,kBAAkB,CAAA;AAO1D,eAAO,MAAM,gBAAgB,UAA4B,CAAA;AAwRzD,eAAO,MAAM,UAAU,EAAE,OA8ExB,CAAA;AA4ED,eAAO,MAAM,aAAa,EAAE,OA0F3B,CAAA;AA6BD,eAAO,MAAM,WAAW,EAAE,OA4BzB,CAAA;AAqBD,eAAO,MAAM,YAAY,EAAE,OAwD1B,CAAA"}

@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.requestCsvFile = exports.getCsvFile = void 0;
+const tslib_1 = require("tslib");
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const fs = tslib_1.__importStar(require("fs"));
+const getCsvFile = (csvURL) => fs.readFileSync(csvURL, 'utf-8');
+exports.getCsvFile = getCsvFile;
+const requestCsvFile = async (csvURL) => {
+    const response = (await ea_bootstrap_1.Requester.request(csvURL));
+    return response.data;
+};
+exports.requestCsvFile = requestCsvFile;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXRpbC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy91dGlsLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7QUFBQSwwREFBbUQ7QUFFbkQsK0NBQXdCO0FBRWpCLE1BQU0sVUFBVSxHQUFHLENBQUMsTUFBYyxFQUFVLEVBQUUsQ0FBQyxFQUFFLENBQUMsWUFBWSxDQUFDLE1BQU0sRUFBRSxPQUFPLENBQUMsQ0FBQTtBQUF6RSxRQUFBLFVBQVUsY0FBK0Q7QUFFL0UsTUFBTSxjQUFjLEdBQUcsS0FBSyxFQUFFLE1BQWMsRUFBbUIsRUFBRTtJQUN0RSxNQUFNLFFBQVEsR0FBRyxDQUFDLE1BQU0sd0JBQVMsQ0FBQyxPQUFPLENBQUMsTUFBTSxDQUFDLENBQTJCLENBQUE7SUFDNUUsT0FBTyxRQUFRLENBQUMsSUFBYyxDQUFBO0FBQ2hDLENBQUMsQ0FBQTtBQUhZLFFBQUEsY0FBYyxrQkFHMUIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBSZXF1ZXN0ZXIgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IEF4aW9zUmVzcG9uc2UgfSBmcm9tICdheGlvcydcbmltcG9ydCAqIGFzIGZzIGZyb20gJ2ZzJ1xuXG5leHBvcnQgY29uc3QgZ2V0Q3N2RmlsZSA9IChjc3ZVUkw6IHN0cmluZyk6IHN0cmluZyA9PiBmcy5yZWFkRmlsZVN5bmMoY3N2VVJMLCAndXRmLTgnKVxuXG5leHBvcnQgY29uc3QgcmVxdWVzdENzdkZpbGUgPSBhc3luYyAoY3N2VVJMOiBzdHJpbmcpOiBQcm9taXNlPHN0cmluZz4gPT4ge1xuICBjb25zdCByZXNwb25zZSA9IChhd2FpdCBSZXF1ZXN0ZXIucmVxdWVzdChjc3ZVUkwpKSBhcyBBeGlvc1Jlc3BvbnNlPHVua25vd24+XG4gIHJldHVybiByZXNwb25zZS5kYXRhIGFzIHN0cmluZ1xufVxuIl19

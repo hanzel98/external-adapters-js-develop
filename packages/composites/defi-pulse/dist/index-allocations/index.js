@@ -1,0 +1,39 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAllocations = void 0;
+const ethers_1 = require("ethers");
+const symbols_1 = require("../symbols");
+/*
+  NOTICE!
+
+  The current implementation is fetching data directly from SetToken contracts (https://etherscan.io/address/0x78733fa5e70e3ab61dc49d93921b289e4b667093#code)
+  Note that this implementation won't work in other networks unless we deploy a copy of the contract.
+
+  The correct implementation should use SetProtocol.js typed library instead to fetch data directly from the SetToken contract directly.
+  The ChainlinkAdapter.getAllocations(ISetToken _setToken) should be reimplemented in JS in order to use it.
+*/
+const ABI = [
+    {
+        inputs: [{ internalType: 'contract ISetToken', name: '_setToken', type: 'address' }],
+        name: 'getAllocations',
+        outputs: [
+            { internalType: 'address[]', name: '', type: 'address[]' },
+            { internalType: 'int256[]', name: '', type: 'int256[]' },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+];
+const getAllocations = async (contractAddress, setAddress, rpcUrl, network) => {
+    const provider = new ethers_1.ethers.providers.JsonRpcProvider(rpcUrl);
+    const index = new ethers_1.ethers.Contract(contractAddress, ABI, provider);
+    const [addresses, balances] = await index.getAllocations(setAddress);
+    // Token balances are coming already normalized as 18 decimals token
+    return await Promise.all(addresses.map(async (address, i) => ({
+        balance: balances[i],
+        symbol: await symbols_1.getSymbol(address, rpcUrl, network),
+        decimals: 18,
+    })));
+};
+exports.getAllocations = getAllocations;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvaW5kZXgtYWxsb2NhdGlvbnMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsbUNBQStCO0FBRS9CLHdDQUFzQztBQUV0Qzs7Ozs7Ozs7RUFRRTtBQUVGLE1BQU0sR0FBRyxHQUFHO0lBQ1Y7UUFDRSxNQUFNLEVBQUUsQ0FBQyxFQUFFLFlBQVksRUFBRSxvQkFBb0IsRUFBRSxJQUFJLEVBQUUsV0FBVyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsQ0FBQztRQUNwRixJQUFJLEVBQUUsZ0JBQWdCO1FBQ3RCLE9BQU8sRUFBRTtZQUNQLEVBQUUsWUFBWSxFQUFFLFdBQVcsRUFBRSxJQUFJLEVBQUUsRUFBRSxFQUFFLElBQUksRUFBRSxXQUFXLEVBQUU7WUFDMUQsRUFBRSxZQUFZLEVBQUUsVUFBVSxFQUFFLElBQUksRUFBRSxFQUFFLEVBQUUsSUFBSSxFQUFFLFVBQVUsRUFBRTtTQUN6RDtRQUNELGVBQWUsRUFBRSxNQUFNO1FBQ3ZCLElBQUksRUFBRSxVQUFVO0tBQ2pCO0NBQ0YsQ0FBQTtBQUVNLE1BQU0sY0FBYyxHQUFHLEtBQUssRUFDakMsZUFBdUIsRUFDdkIsVUFBa0IsRUFDbEIsTUFBYyxFQUNkLE9BQWUsRUFDa0IsRUFBRTtJQUNuQyxNQUFNLFFBQVEsR0FBRyxJQUFJLGVBQU0sQ0FBQyxTQUFTLENBQUMsZUFBZSxDQUFDLE1BQU0sQ0FBQyxDQUFBO0lBQzdELE1BQU0sS0FBSyxHQUFHLElBQUksZUFBTSxDQUFDLFFBQVEsQ0FBQyxlQUFlLEVBQUUsR0FBRyxFQUFFLFFBQVEsQ0FBQyxDQUFBO0lBRWpFLE1BQU0sQ0FBQyxTQUFTLEVBQUUsUUFBUSxDQUFDLEdBQUcsTUFBTSxLQUFLLENBQUMsY0FBYyxDQUFDLFVBQVUsQ0FBQyxDQUFBO0lBRXBFLG9FQUFvRTtJQUNwRSxPQUFPLE1BQU0sT0FBTyxDQUFDLEdBQUcsQ0FDdEIsU0FBUyxDQUFDLEdBQUcsQ0FBQyxLQUFLLEVBQUUsT0FBZSxFQUFFLENBQVMsRUFBRSxFQUFFLENBQUMsQ0FBQztRQUNuRCxPQUFPLEVBQUUsUUFBUSxDQUFDLENBQUMsQ0FBQztRQUNwQixNQUFNLEVBQUUsTUFBTSxtQkFBUyxDQUFDLE9BQU8sRUFBRSxNQUFNLEVBQUUsT0FBTyxDQUFDO1FBQ2pELFFBQVEsRUFBRSxFQUFFO0tBQ2IsQ0FBQyxDQUFDLENBQ0osQ0FBQTtBQUNILENBQUMsQ0FBQTtBQW5CWSxRQUFBLGNBQWMsa0JBbUIxQiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGV0aGVycyB9IGZyb20gJ2V0aGVycydcbmltcG9ydCB7IHR5cGVzIH0gZnJvbSAnQGNoYWlubGluay90b2tlbi1hbGxvY2F0aW9uLWFkYXB0ZXInXG5pbXBvcnQgeyBnZXRTeW1ib2wgfSBmcm9tICcuLi9zeW1ib2xzJ1xuXG4vKlxuICBOT1RJQ0UhXG5cbiAgVGhlIGN1cnJlbnQgaW1wbGVtZW50YXRpb24gaXMgZmV0Y2hpbmcgZGF0YSBkaXJlY3RseSBmcm9tIFNldFRva2VuIGNvbnRyYWN0cyAoaHR0cHM6Ly9ldGhlcnNjYW4uaW8vYWRkcmVzcy8weDc4NzMzZmE1ZTcwZTNhYjYxZGM0OWQ5MzkyMWIyODllNGI2NjcwOTMjY29kZSlcbiAgTm90ZSB0aGF0IHRoaXMgaW1wbGVtZW50YXRpb24gd29uJ3Qgd29yayBpbiBvdGhlciBuZXR3b3JrcyB1bmxlc3Mgd2UgZGVwbG95IGEgY29weSBvZiB0aGUgY29udHJhY3QuXG5cbiAgVGhlIGNvcnJlY3QgaW1wbGVtZW50YXRpb24gc2hvdWxkIHVzZSBTZXRQcm90b2NvbC5qcyB0eXBlZCBsaWJyYXJ5IGluc3RlYWQgdG8gZmV0Y2ggZGF0YSBkaXJlY3RseSBmcm9tIHRoZSBTZXRUb2tlbiBjb250cmFjdCBkaXJlY3RseS4gXG4gIFRoZSBDaGFpbmxpbmtBZGFwdGVyLmdldEFsbG9jYXRpb25zKElTZXRUb2tlbiBfc2V0VG9rZW4pIHNob3VsZCBiZSByZWltcGxlbWVudGVkIGluIEpTIGluIG9yZGVyIHRvIHVzZSBpdC5cbiovXG5cbmNvbnN0IEFCSSA9IFtcbiAge1xuICAgIGlucHV0czogW3sgaW50ZXJuYWxUeXBlOiAnY29udHJhY3QgSVNldFRva2VuJywgbmFtZTogJ19zZXRUb2tlbicsIHR5cGU6ICdhZGRyZXNzJyB9XSxcbiAgICBuYW1lOiAnZ2V0QWxsb2NhdGlvbnMnLFxuICAgIG91dHB1dHM6IFtcbiAgICAgIHsgaW50ZXJuYWxUeXBlOiAnYWRkcmVzc1tdJywgbmFtZTogJycsIHR5cGU6ICdhZGRyZXNzW10nIH0sXG4gICAgICB7IGludGVybmFsVHlwZTogJ2ludDI1NltdJywgbmFtZTogJycsIHR5cGU6ICdpbnQyNTZbXScgfSxcbiAgICBdLFxuICAgIHN0YXRlTXV0YWJpbGl0eTogJ3ZpZXcnLFxuICAgIHR5cGU6ICdmdW5jdGlvbicsXG4gIH0sXG5dXG5cbmV4cG9ydCBjb25zdCBnZXRBbGxvY2F0aW9ucyA9IGFzeW5jIChcbiAgY29udHJhY3RBZGRyZXNzOiBzdHJpbmcsXG4gIHNldEFkZHJlc3M6IHN0cmluZyxcbiAgcnBjVXJsOiBzdHJpbmcsXG4gIG5ldHdvcms6IHN0cmluZyxcbik6IFByb21pc2U8dHlwZXMuVG9rZW5BbGxvY2F0aW9ucz4gPT4ge1xuICBjb25zdCBwcm92aWRlciA9IG5ldyBldGhlcnMucHJvdmlkZXJzLkpzb25ScGNQcm92aWRlcihycGNVcmwpXG4gIGNvbnN0IGluZGV4ID0gbmV3IGV0aGVycy5Db250cmFjdChjb250cmFjdEFkZHJlc3MsIEFCSSwgcHJvdmlkZXIpXG5cbiAgY29uc3QgW2FkZHJlc3NlcywgYmFsYW5jZXNdID0gYXdhaXQgaW5kZXguZ2V0QWxsb2NhdGlvbnMoc2V0QWRkcmVzcylcblxuICAvLyBUb2tlbiBiYWxhbmNlcyBhcmUgY29taW5nIGFscmVhZHkgbm9ybWFsaXplZCBhcyAxOCBkZWNpbWFscyB0b2tlblxuICByZXR1cm4gYXdhaXQgUHJvbWlzZS5hbGwoXG4gICAgYWRkcmVzc2VzLm1hcChhc3luYyAoYWRkcmVzczogc3RyaW5nLCBpOiBudW1iZXIpID0+ICh7XG4gICAgICBiYWxhbmNlOiBiYWxhbmNlc1tpXSxcbiAgICAgIHN5bWJvbDogYXdhaXQgZ2V0U3ltYm9sKGFkZHJlc3MsIHJwY1VybCwgbmV0d29yayksXG4gICAgICBkZWNpbWFsczogMTgsXG4gICAgfSkpLFxuICApXG59XG4iXX0=

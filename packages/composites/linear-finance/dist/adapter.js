@@ -1,0 +1,40 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeExecute = exports.execute = exports.inputParameters = void 0;
+const tslib_1 = require("tslib");
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const config_1 = require("./config");
+const csv_1 = require("./csv");
+const TokenAllocation = tslib_1.__importStar(require("@chainlink/token-allocation-adapter"));
+exports.inputParameters = {
+    index: true,
+};
+const execute = async (input, context, config) => {
+    const validator = new ea_bootstrap_1.Validator(input, exports.inputParameters);
+    if (validator.error)
+        throw validator.error;
+    const jobRunID = validator.validated.jobRunID;
+    const index = validator.validated.data.index.toLowerCase();
+    if (!config_1.INDICES.includes(index))
+        throw new ea_bootstrap_1.AdapterError({
+            jobRunID,
+            message: `${index} not supported. Must be one of ${config_1.INDICES}`,
+            statusCode: 400,
+        });
+    const csvData = config.indices[index];
+    if (!csvData)
+        throw new ea_bootstrap_1.AdapterError({
+            jobRunID,
+            message: `${index} CSV is not configured`,
+            statusCode: 400,
+        });
+    const allocations = await csv_1.parseData(csvData);
+    const _execute = TokenAllocation.makeExecute();
+    return await _execute({ id: jobRunID, data: { ...input.data, allocations } }, context);
+};
+exports.execute = execute;
+const makeExecute = (config) => {
+    return async (request, context) => exports.execute(request, context, config || config_1.makeConfig());
+};
+exports.makeExecute = makeExecute;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYWRhcHRlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy9hZGFwdGVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7QUFBQSwwREFBaUU7QUFFakUscUNBQXNEO0FBQ3RELCtCQUFpQztBQUNqQyw2RkFBc0U7QUFFekQsUUFBQSxlQUFlLEdBQW9CO0lBQzlDLEtBQUssRUFBRSxJQUFJO0NBQ1osQ0FBQTtBQUVNLE1BQU0sT0FBTyxHQUE4QixLQUFLLEVBQUUsS0FBSyxFQUFFLE9BQU8sRUFBRSxNQUFNLEVBQUUsRUFBRTtJQUNqRixNQUFNLFNBQVMsR0FBRyxJQUFJLHdCQUFTLENBQUMsS0FBSyxFQUFFLHVCQUFlLENBQUMsQ0FBQTtJQUN2RCxJQUFJLFNBQVMsQ0FBQyxLQUFLO1FBQUUsTUFBTSxTQUFTLENBQUMsS0FBSyxDQUFBO0lBRTFDLE1BQU0sUUFBUSxHQUFHLFNBQVMsQ0FBQyxTQUFTLENBQUMsUUFBUSxDQUFBO0lBRTdDLE1BQU0sS0FBSyxHQUFHLFNBQVMsQ0FBQyxTQUFTLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxXQUFXLEVBQUUsQ0FBQTtJQUUxRCxJQUFJLENBQUMsZ0JBQU8sQ0FBQyxRQUFRLENBQUMsS0FBSyxDQUFDO1FBQzFCLE1BQU0sSUFBSSwyQkFBWSxDQUFDO1lBQ3JCLFFBQVE7WUFDUixPQUFPLEVBQUUsR0FBRyxLQUFLLGtDQUFrQyxnQkFBTyxFQUFFO1lBQzVELFVBQVUsRUFBRSxHQUFHO1NBQ2hCLENBQUMsQ0FBQTtJQUVKLE1BQU0sT0FBTyxHQUFHLE1BQU0sQ0FBQyxPQUFPLENBQUMsS0FBSyxDQUFDLENBQUE7SUFFckMsSUFBSSxDQUFDLE9BQU87UUFDVixNQUFNLElBQUksMkJBQVksQ0FBQztZQUNyQixRQUFRO1lBQ1IsT0FBTyxFQUFFLEdBQUcsS0FBSyx3QkFBd0I7WUFDekMsVUFBVSxFQUFFLEdBQUc7U0FDaEIsQ0FBQyxDQUFBO0lBRUosTUFBTSxXQUFXLEdBQUcsTUFBTSxlQUFTLENBQUMsT0FBTyxDQUFDLENBQUE7SUFFNUMsTUFBTSxRQUFRLEdBQUcsZUFBZSxDQUFDLFdBQVcsRUFBRSxDQUFBO0lBQzlDLE9BQU8sTUFBTSxRQUFRLENBQUMsRUFBRSxFQUFFLEVBQUUsUUFBUSxFQUFFLElBQUksRUFBRSxFQUFFLEdBQUcsS0FBSyxDQUFDLElBQUksRUFBRSxXQUFXLEVBQUUsRUFBRSxFQUFFLE9BQU8sQ0FBQyxDQUFBO0FBQ3hGLENBQUMsQ0FBQTtBQTVCWSxRQUFBLE9BQU8sV0E0Qm5CO0FBRU0sTUFBTSxXQUFXLEdBQUcsQ0FBQyxNQUFlLEVBQVcsRUFBRTtJQUN0RCxPQUFPLEtBQUssRUFBRSxPQUFPLEVBQUUsT0FBTyxFQUFFLEVBQUUsQ0FBQyxlQUFPLENBQUMsT0FBTyxFQUFFLE9BQU8sRUFBRSxNQUFNLElBQUksbUJBQVUsRUFBRSxDQUFDLENBQUE7QUFDdEYsQ0FBQyxDQUFBO0FBRlksUUFBQSxXQUFXLGVBRXZCIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgVmFsaWRhdG9yLCBBZGFwdGVyRXJyb3IgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IEV4ZWN1dGUsIEV4ZWN1dGVXaXRoQ29uZmlnLCBJbnB1dFBhcmFtZXRlcnMgfSBmcm9tICdAY2hhaW5saW5rL3R5cGVzJ1xuaW1wb3J0IHsgbWFrZUNvbmZpZywgQ29uZmlnLCBJTkRJQ0VTIH0gZnJvbSAnLi9jb25maWcnXG5pbXBvcnQgeyBwYXJzZURhdGEgfSBmcm9tICcuL2NzdidcbmltcG9ydCAqIGFzIFRva2VuQWxsb2NhdGlvbiBmcm9tICdAY2hhaW5saW5rL3Rva2VuLWFsbG9jYXRpb24tYWRhcHRlcidcblxuZXhwb3J0IGNvbnN0IGlucHV0UGFyYW1ldGVyczogSW5wdXRQYXJhbWV0ZXJzID0ge1xuICBpbmRleDogdHJ1ZSxcbn1cblxuZXhwb3J0IGNvbnN0IGV4ZWN1dGU6IEV4ZWN1dGVXaXRoQ29uZmlnPENvbmZpZz4gPSBhc3luYyAoaW5wdXQsIGNvbnRleHQsIGNvbmZpZykgPT4ge1xuICBjb25zdCB2YWxpZGF0b3IgPSBuZXcgVmFsaWRhdG9yKGlucHV0LCBpbnB1dFBhcmFtZXRlcnMpXG4gIGlmICh2YWxpZGF0b3IuZXJyb3IpIHRocm93IHZhbGlkYXRvci5lcnJvclxuXG4gIGNvbnN0IGpvYlJ1bklEID0gdmFsaWRhdG9yLnZhbGlkYXRlZC5qb2JSdW5JRFxuXG4gIGNvbnN0IGluZGV4ID0gdmFsaWRhdG9yLnZhbGlkYXRlZC5kYXRhLmluZGV4LnRvTG93ZXJDYXNlKClcblxuICBpZiAoIUlORElDRVMuaW5jbHVkZXMoaW5kZXgpKVxuICAgIHRocm93IG5ldyBBZGFwdGVyRXJyb3Ioe1xuICAgICAgam9iUnVuSUQsXG4gICAgICBtZXNzYWdlOiBgJHtpbmRleH0gbm90IHN1cHBvcnRlZC4gTXVzdCBiZSBvbmUgb2YgJHtJTkRJQ0VTfWAsXG4gICAgICBzdGF0dXNDb2RlOiA0MDAsXG4gICAgfSlcblxuICBjb25zdCBjc3ZEYXRhID0gY29uZmlnLmluZGljZXNbaW5kZXhdXG5cbiAgaWYgKCFjc3ZEYXRhKVxuICAgIHRocm93IG5ldyBBZGFwdGVyRXJyb3Ioe1xuICAgICAgam9iUnVuSUQsXG4gICAgICBtZXNzYWdlOiBgJHtpbmRleH0gQ1NWIGlzIG5vdCBjb25maWd1cmVkYCxcbiAgICAgIHN0YXR1c0NvZGU6IDQwMCxcbiAgICB9KVxuXG4gIGNvbnN0IGFsbG9jYXRpb25zID0gYXdhaXQgcGFyc2VEYXRhKGNzdkRhdGEpXG5cbiAgY29uc3QgX2V4ZWN1dGUgPSBUb2tlbkFsbG9jYXRpb24ubWFrZUV4ZWN1dGUoKVxuICByZXR1cm4gYXdhaXQgX2V4ZWN1dGUoeyBpZDogam9iUnVuSUQsIGRhdGE6IHsgLi4uaW5wdXQuZGF0YSwgYWxsb2NhdGlvbnMgfSB9LCBjb250ZXh0KVxufVxuXG5leHBvcnQgY29uc3QgbWFrZUV4ZWN1dGUgPSAoY29uZmlnPzogQ29uZmlnKTogRXhlY3V0ZSA9PiB7XG4gIHJldHVybiBhc3luYyAocmVxdWVzdCwgY29udGV4dCkgPT4gZXhlY3V0ZShyZXF1ZXN0LCBjb250ZXh0LCBjb25maWcgfHwgbWFrZUNvbmZpZygpKVxufVxuIl19

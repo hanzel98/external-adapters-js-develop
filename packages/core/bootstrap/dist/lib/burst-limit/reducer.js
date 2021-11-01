@@ -1,0 +1,78 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rootReducer = exports.selectParticiantsRequestsFor = exports.selectTotalNumberOfRequestsFor = exports.sortedFilter = exports.requestReducer = exports.initialRequestsState = exports.Intervals = exports.IntervalNames = void 0;
+const tslib_1 = require("tslib");
+const toolkit_1 = require("@reduxjs/toolkit");
+const rate_limit_1 = require("../rate-limit");
+const actions = tslib_1.__importStar(require("./actions"));
+var IntervalNames;
+(function (IntervalNames) {
+    IntervalNames["SECOND"] = "SECOND";
+    IntervalNames["MINUTE"] = "MINUTE";
+})(IntervalNames = exports.IntervalNames || (exports.IntervalNames = {}));
+exports.Intervals = {
+    [IntervalNames.SECOND]: 1000,
+    [IntervalNames.MINUTE]: 60 * 1000,
+};
+exports.initialRequestsState = {
+    total: {
+        SECOND: 0,
+        MINUTE: 0,
+    },
+    participants: {
+        SECOND: [],
+        MINUTE: [],
+    },
+};
+exports.requestReducer = toolkit_1.createReducer(exports.initialRequestsState, (builder) => {
+    builder.addCase(actions.requestObserved, (state, action) => {
+        const request = {
+            id: rate_limit_1.makeId(action.payload.input),
+            t: Date.now(),
+        };
+        const storedIntervals = [IntervalNames.SECOND, IntervalNames.MINUTE];
+        for (const intervalName of storedIntervals) {
+            // remove all requests that are older than the current interval
+            const window = request.t - exports.Intervals[intervalName];
+            const isInWindow = (h) => h.t >= window;
+            state.participants[intervalName] = sortedFilter(state.participants[intervalName], isInWindow);
+            // add new request
+            state.participants[intervalName] = state.participants[intervalName].concat([request]);
+            // update total
+            state.total[intervalName] = state.participants[intervalName].length;
+        }
+        return state;
+    });
+});
+/**
+ * Remove stale request entries from an array.
+ * This function assumes that the array is sorted by timestamp,
+ * where the oldest entry lives in the 0th index, and the newest entry
+ * lives in the arr.length-1th index
+ * @param requests The requests to filter
+ * @param filter The windowing function to apply
+ */
+function sortedFilter(requests, windowingFunction) {
+    // if we want a higher performance implementation
+    // we can later resort to a custom array class that is circular
+    // so we can amortize expensive operations like resizing, and make
+    // operations like moving the head index much quicker
+    const firstNonStaleRequestIndex = requests.findIndex(windowingFunction);
+    if (firstNonStaleRequestIndex === -1) {
+        return [];
+    }
+    return requests.slice(firstNonStaleRequestIndex);
+}
+exports.sortedFilter = sortedFilter;
+function selectTotalNumberOfRequestsFor(state, interval) {
+    return state.total[interval] ?? 0;
+}
+exports.selectTotalNumberOfRequestsFor = selectTotalNumberOfRequestsFor;
+function selectParticiantsRequestsFor(state, interval) {
+    return state.participants[interval] ?? [];
+}
+exports.selectParticiantsRequestsFor = selectParticiantsRequestsFor;
+exports.rootReducer = toolkit_1.combineReducers({
+    requests: exports.requestReducer,
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVkdWNlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9saWIvYnVyc3QtbGltaXQvcmVkdWNlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7O0FBQUEsOENBQWlFO0FBQ2pFLDhDQUFzQztBQUN0QywyREFBb0M7QUFFcEMsSUFBWSxhQUdYO0FBSEQsV0FBWSxhQUFhO0lBQ3ZCLGtDQUFpQixDQUFBO0lBQ2pCLGtDQUFpQixDQUFBO0FBQ25CLENBQUMsRUFIVyxhQUFhLEdBQWIscUJBQWEsS0FBYixxQkFBYSxRQUd4QjtBQUVZLFFBQUEsU0FBUyxHQUE4QjtJQUNsRCxDQUFDLGFBQWEsQ0FBQyxNQUFNLENBQUMsRUFBRSxJQUFJO0lBQzVCLENBQUMsYUFBYSxDQUFDLE1BQU0sQ0FBQyxFQUFFLEVBQUUsR0FBRyxJQUFJO0NBQ2xDLENBQUE7QUFvQlksUUFBQSxvQkFBb0IsR0FBa0I7SUFDakQsS0FBSyxFQUFFO1FBQ0wsTUFBTSxFQUFFLENBQUM7UUFDVCxNQUFNLEVBQUUsQ0FBQztLQUNWO0lBQ0QsWUFBWSxFQUFFO1FBQ1osTUFBTSxFQUFFLEVBQUU7UUFDVixNQUFNLEVBQUUsRUFBRTtLQUNYO0NBQ0YsQ0FBQTtBQUVZLFFBQUEsY0FBYyxHQUFHLHVCQUFhLENBQWdCLDRCQUFvQixFQUFFLENBQUMsT0FBTyxFQUFFLEVBQUU7SUFDM0YsT0FBTyxDQUFDLE9BQU8sQ0FBQyxPQUFPLENBQUMsZUFBZSxFQUFFLENBQUMsS0FBSyxFQUFFLE1BQU0sRUFBRSxFQUFFO1FBQ3pELE1BQU0sT0FBTyxHQUFZO1lBQ3ZCLEVBQUUsRUFBRSxtQkFBTSxDQUFDLE1BQU0sQ0FBQyxPQUFPLENBQUMsS0FBSyxDQUFDO1lBQ2hDLENBQUMsRUFBRSxJQUFJLENBQUMsR0FBRyxFQUFFO1NBQ2QsQ0FBQTtRQUNELE1BQU0sZUFBZSxHQUFHLENBQUMsYUFBYSxDQUFDLE1BQU0sRUFBRSxhQUFhLENBQUMsTUFBTSxDQUFDLENBQUE7UUFFcEUsS0FBSyxNQUFNLFlBQVksSUFBSSxlQUFlLEVBQUU7WUFDMUMsK0RBQStEO1lBQy9ELE1BQU0sTUFBTSxHQUFHLE9BQU8sQ0FBQyxDQUFDLEdBQUcsaUJBQVMsQ0FBQyxZQUFZLENBQUMsQ0FBQTtZQUNsRCxNQUFNLFVBQVUsR0FBRyxDQUFDLENBQVUsRUFBRSxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUMsSUFBSSxNQUFNLENBQUE7WUFDaEQsS0FBSyxDQUFDLFlBQVksQ0FBQyxZQUFZLENBQUMsR0FBRyxZQUFZLENBQUMsS0FBSyxDQUFDLFlBQVksQ0FBQyxZQUFZLENBQUMsRUFBRSxVQUFVLENBQUMsQ0FBQTtZQUU3RixrQkFBa0I7WUFDbEIsS0FBSyxDQUFDLFlBQVksQ0FBQyxZQUFZLENBQUMsR0FBRyxLQUFLLENBQUMsWUFBWSxDQUFDLFlBQVksQ0FBQyxDQUFDLE1BQU0sQ0FBQyxDQUFDLE9BQU8sQ0FBQyxDQUFDLENBQUE7WUFFckYsZUFBZTtZQUNmLEtBQUssQ0FBQyxLQUFLLENBQUMsWUFBWSxDQUFDLEdBQUcsS0FBSyxDQUFDLFlBQVksQ0FBQyxZQUFZLENBQUMsQ0FBQyxNQUFNLENBQUE7U0FDcEU7UUFFRCxPQUFPLEtBQUssQ0FBQTtJQUNkLENBQUMsQ0FBQyxDQUFBO0FBQ0osQ0FBQyxDQUFDLENBQUE7QUFFRjs7Ozs7OztHQU9HO0FBQ0gsU0FBZ0IsWUFBWSxDQUMxQixRQUFtQixFQUNuQixpQkFBMEM7SUFFMUMsaURBQWlEO0lBQ2pELCtEQUErRDtJQUMvRCxrRUFBa0U7SUFDbEUscURBQXFEO0lBQ3JELE1BQU0seUJBQXlCLEdBQUcsUUFBUSxDQUFDLFNBQVMsQ0FBQyxpQkFBaUIsQ0FBQyxDQUFBO0lBQ3ZFLElBQUkseUJBQXlCLEtBQUssQ0FBQyxDQUFDLEVBQUU7UUFDcEMsT0FBTyxFQUFFLENBQUE7S0FDVjtJQUVELE9BQU8sUUFBUSxDQUFDLEtBQUssQ0FBQyx5QkFBeUIsQ0FBQyxDQUFBO0FBQ2xELENBQUM7QUFkRCxvQ0FjQztBQUVELFNBQWdCLDhCQUE4QixDQUM1QyxLQUFvQixFQUNwQixRQUF1QjtJQUV2QixPQUFPLEtBQUssQ0FBQyxLQUFLLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxDQUFBO0FBQ25DLENBQUM7QUFMRCx3RUFLQztBQUVELFNBQWdCLDRCQUE0QixDQUMxQyxLQUFvQixFQUNwQixRQUF1QjtJQUV2QixPQUFPLEtBQUssQ0FBQyxZQUFZLENBQUMsUUFBUSxDQUFDLElBQUksRUFBRSxDQUFBO0FBQzNDLENBQUM7QUFMRCxvRUFLQztBQUVZLFFBQUEsV0FBVyxHQUFHLHlCQUFlLENBQUM7SUFDekMsUUFBUSxFQUFFLHNCQUFjO0NBQ3pCLENBQUMsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGNvbWJpbmVSZWR1Y2VycywgY3JlYXRlUmVkdWNlciB9IGZyb20gJ0ByZWR1eGpzL3Rvb2xraXQnXG5pbXBvcnQgeyBtYWtlSWQgfSBmcm9tICcuLi9yYXRlLWxpbWl0J1xuaW1wb3J0ICogYXMgYWN0aW9ucyBmcm9tICcuL2FjdGlvbnMnXG5cbmV4cG9ydCBlbnVtIEludGVydmFsTmFtZXMge1xuICBTRUNPTkQgPSAnU0VDT05EJyxcbiAgTUlOVVRFID0gJ01JTlVURScsXG59XG5cbmV4cG9ydCBjb25zdCBJbnRlcnZhbHM6IHsgW2tleTogc3RyaW5nXTogbnVtYmVyIH0gPSB7XG4gIFtJbnRlcnZhbE5hbWVzLlNFQ09ORF06IDEwMDAsXG4gIFtJbnRlcnZhbE5hbWVzLk1JTlVURV06IDYwICogMTAwMCxcbn1cblxuLy8gU2hvcnRlbmVkIG5hbWVzIHRvIHJlZHVjZSBtZW1vcnkgdXNhZ2VcbmV4cG9ydCBpbnRlcmZhY2UgUmVxdWVzdCB7XG4gIGlkOiBzdHJpbmdcbiAgLyoqXG4gICAqIFRpbWVzdGFtcFxuICAgKi9cbiAgdDogbnVtYmVyXG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgUmVxdWVzdHNTdGF0ZSB7XG4gIHRvdGFsOiB7XG4gICAgW2ludGVydmFsOiBzdHJpbmddOiBudW1iZXJcbiAgfVxuICBwYXJ0aWNpcGFudHM6IHtcbiAgICBbaW50ZXJ2YWw6IHN0cmluZ106IFJlcXVlc3RbXVxuICB9XG59XG5cbmV4cG9ydCBjb25zdCBpbml0aWFsUmVxdWVzdHNTdGF0ZTogUmVxdWVzdHNTdGF0ZSA9IHtcbiAgdG90YWw6IHtcbiAgICBTRUNPTkQ6IDAsXG4gICAgTUlOVVRFOiAwLFxuICB9LFxuICBwYXJ0aWNpcGFudHM6IHtcbiAgICBTRUNPTkQ6IFtdLFxuICAgIE1JTlVURTogW10sXG4gIH0sXG59XG5cbmV4cG9ydCBjb25zdCByZXF1ZXN0UmVkdWNlciA9IGNyZWF0ZVJlZHVjZXI8UmVxdWVzdHNTdGF0ZT4oaW5pdGlhbFJlcXVlc3RzU3RhdGUsIChidWlsZGVyKSA9PiB7XG4gIGJ1aWxkZXIuYWRkQ2FzZShhY3Rpb25zLnJlcXVlc3RPYnNlcnZlZCwgKHN0YXRlLCBhY3Rpb24pID0+IHtcbiAgICBjb25zdCByZXF1ZXN0OiBSZXF1ZXN0ID0ge1xuICAgICAgaWQ6IG1ha2VJZChhY3Rpb24ucGF5bG9hZC5pbnB1dCksXG4gICAgICB0OiBEYXRlLm5vdygpLFxuICAgIH1cbiAgICBjb25zdCBzdG9yZWRJbnRlcnZhbHMgPSBbSW50ZXJ2YWxOYW1lcy5TRUNPTkQsIEludGVydmFsTmFtZXMuTUlOVVRFXVxuXG4gICAgZm9yIChjb25zdCBpbnRlcnZhbE5hbWUgb2Ygc3RvcmVkSW50ZXJ2YWxzKSB7XG4gICAgICAvLyByZW1vdmUgYWxsIHJlcXVlc3RzIHRoYXQgYXJlIG9sZGVyIHRoYW4gdGhlIGN1cnJlbnQgaW50ZXJ2YWxcbiAgICAgIGNvbnN0IHdpbmRvdyA9IHJlcXVlc3QudCAtIEludGVydmFsc1tpbnRlcnZhbE5hbWVdXG4gICAgICBjb25zdCBpc0luV2luZG93ID0gKGg6IFJlcXVlc3QpID0+IGgudCA+PSB3aW5kb3dcbiAgICAgIHN0YXRlLnBhcnRpY2lwYW50c1tpbnRlcnZhbE5hbWVdID0gc29ydGVkRmlsdGVyKHN0YXRlLnBhcnRpY2lwYW50c1tpbnRlcnZhbE5hbWVdLCBpc0luV2luZG93KVxuXG4gICAgICAvLyBhZGQgbmV3IHJlcXVlc3RcbiAgICAgIHN0YXRlLnBhcnRpY2lwYW50c1tpbnRlcnZhbE5hbWVdID0gc3RhdGUucGFydGljaXBhbnRzW2ludGVydmFsTmFtZV0uY29uY2F0KFtyZXF1ZXN0XSlcblxuICAgICAgLy8gdXBkYXRlIHRvdGFsXG4gICAgICBzdGF0ZS50b3RhbFtpbnRlcnZhbE5hbWVdID0gc3RhdGUucGFydGljaXBhbnRzW2ludGVydmFsTmFtZV0ubGVuZ3RoXG4gICAgfVxuXG4gICAgcmV0dXJuIHN0YXRlXG4gIH0pXG59KVxuXG4vKipcbiAqIFJlbW92ZSBzdGFsZSByZXF1ZXN0IGVudHJpZXMgZnJvbSBhbiBhcnJheS5cbiAqIFRoaXMgZnVuY3Rpb24gYXNzdW1lcyB0aGF0IHRoZSBhcnJheSBpcyBzb3J0ZWQgYnkgdGltZXN0YW1wLFxuICogd2hlcmUgdGhlIG9sZGVzdCBlbnRyeSBsaXZlcyBpbiB0aGUgMHRoIGluZGV4LCBhbmQgdGhlIG5ld2VzdCBlbnRyeVxuICogbGl2ZXMgaW4gdGhlIGFyci5sZW5ndGgtMXRoIGluZGV4XG4gKiBAcGFyYW0gcmVxdWVzdHMgVGhlIHJlcXVlc3RzIHRvIGZpbHRlclxuICogQHBhcmFtIGZpbHRlciBUaGUgd2luZG93aW5nIGZ1bmN0aW9uIHRvIGFwcGx5XG4gKi9cbmV4cG9ydCBmdW5jdGlvbiBzb3J0ZWRGaWx0ZXIoXG4gIHJlcXVlc3RzOiBSZXF1ZXN0W10sXG4gIHdpbmRvd2luZ0Z1bmN0aW9uOiAoaDogUmVxdWVzdCkgPT4gYm9vbGVhbixcbik6IFJlcXVlc3RbXSB7XG4gIC8vIGlmIHdlIHdhbnQgYSBoaWdoZXIgcGVyZm9ybWFuY2UgaW1wbGVtZW50YXRpb25cbiAgLy8gd2UgY2FuIGxhdGVyIHJlc29ydCB0byBhIGN1c3RvbSBhcnJheSBjbGFzcyB0aGF0IGlzIGNpcmN1bGFyXG4gIC8vIHNvIHdlIGNhbiBhbW9ydGl6ZSBleHBlbnNpdmUgb3BlcmF0aW9ucyBsaWtlIHJlc2l6aW5nLCBhbmQgbWFrZVxuICAvLyBvcGVyYXRpb25zIGxpa2UgbW92aW5nIHRoZSBoZWFkIGluZGV4IG11Y2ggcXVpY2tlclxuICBjb25zdCBmaXJzdE5vblN0YWxlUmVxdWVzdEluZGV4ID0gcmVxdWVzdHMuZmluZEluZGV4KHdpbmRvd2luZ0Z1bmN0aW9uKVxuICBpZiAoZmlyc3ROb25TdGFsZVJlcXVlc3RJbmRleCA9PT0gLTEpIHtcbiAgICByZXR1cm4gW11cbiAgfVxuXG4gIHJldHVybiByZXF1ZXN0cy5zbGljZShmaXJzdE5vblN0YWxlUmVxdWVzdEluZGV4KVxufVxuXG5leHBvcnQgZnVuY3Rpb24gc2VsZWN0VG90YWxOdW1iZXJPZlJlcXVlc3RzRm9yKFxuICBzdGF0ZTogUmVxdWVzdHNTdGF0ZSxcbiAgaW50ZXJ2YWw6IEludGVydmFsTmFtZXMsXG4pOiBudW1iZXIge1xuICByZXR1cm4gc3RhdGUudG90YWxbaW50ZXJ2YWxdID8/IDBcbn1cblxuZXhwb3J0IGZ1bmN0aW9uIHNlbGVjdFBhcnRpY2lhbnRzUmVxdWVzdHNGb3IoXG4gIHN0YXRlOiBSZXF1ZXN0c1N0YXRlLFxuICBpbnRlcnZhbDogSW50ZXJ2YWxOYW1lcyxcbik6IFJlcXVlc3RbXSB7XG4gIHJldHVybiBzdGF0ZS5wYXJ0aWNpcGFudHNbaW50ZXJ2YWxdID8/IFtdXG59XG5cbmV4cG9ydCBjb25zdCByb290UmVkdWNlciA9IGNvbWJpbmVSZWR1Y2Vycyh7XG4gIHJlcXVlc3RzOiByZXF1ZXN0UmVkdWNlcixcbn0pXG5leHBvcnQgdHlwZSBCdXJzdExpbWl0U3RhdGUgPSBSZXR1cm5UeXBlPHR5cGVvZiByb290UmVkdWNlcj5cbiJdfQ==

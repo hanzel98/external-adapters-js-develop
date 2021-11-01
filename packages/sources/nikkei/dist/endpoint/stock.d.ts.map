@@ -1,0 +1,1 @@
+{"version":3,"file":"stock.d.ts","sourceRoot":"","sources":["../../src/endpoint/stock.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AAE7E,eAAO,MAAM,kBAAkB,UAAqB,CAAA;AAQpD,eAAO,MAAM,eAAe,EAAE,eAE7B,CAAA;AAED,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CAwB7C,CAAA"}

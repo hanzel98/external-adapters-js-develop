@@ -1,0 +1,12 @@
+"use strict";
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const adapter_1 = require("./adapter");
+const config_1 = require("./config");
+const NAME = 'ANYBLOCK';
+module.exports = {
+    NAME,
+    makeExecute: adapter_1.makeExecute,
+    makeConfig: config_1.makeConfig,
+    ...ea_bootstrap_1.expose(NAME, adapter_1.makeExecute(), undefined, adapter_1.endpointSelector),
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLDBEQUFnRDtBQUNoRCx1Q0FBeUQ7QUFDekQscUNBQXFDO0FBRXJDLE1BQU0sSUFBSSxHQUFHLFVBQVUsQ0FBQTtBQUV2QixpQkFBUztJQUNQLElBQUk7SUFDSixXQUFXLEVBQVgscUJBQVc7SUFDWCxVQUFVLEVBQVYsbUJBQVU7SUFDVixHQUFHLHFCQUFNLENBQUMsSUFBSSxFQUFFLHFCQUFXLEVBQUUsRUFBRSxTQUFTLEVBQUUsMEJBQWdCLENBQUM7Q0FDNUQsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGV4cG9zZSB9IGZyb20gJ0BjaGFpbmxpbmsvZWEtYm9vdHN0cmFwJ1xuaW1wb3J0IHsgZW5kcG9pbnRTZWxlY3RvciwgbWFrZUV4ZWN1dGUgfSBmcm9tICcuL2FkYXB0ZXInXG5pbXBvcnQgeyBtYWtlQ29uZmlnIH0gZnJvbSAnLi9jb25maWcnXG5cbmNvbnN0IE5BTUUgPSAnQU5ZQkxPQ0snXG5cbmV4cG9ydCA9IHtcbiAgTkFNRSxcbiAgbWFrZUV4ZWN1dGUsXG4gIG1ha2VDb25maWcsXG4gIC4uLmV4cG9zZShOQU1FLCBtYWtlRXhlY3V0ZSgpLCB1bmRlZmluZWQsIGVuZHBvaW50U2VsZWN0b3IpLFxufVxuIl19

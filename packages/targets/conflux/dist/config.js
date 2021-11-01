@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeConfig = exports.DEFAULT_ENDPOINT = void 0;
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+exports.DEFAULT_ENDPOINT = 'conflux';
+const makeConfig = () => {
+    return {
+        api: {},
+        rpcUrl: ea_bootstrap_1.util.getRequiredEnv('RPC_URL'),
+        networkId: Number(ea_bootstrap_1.util.getRequiredEnv('NETWORK_ID')),
+        privateKey: ea_bootstrap_1.util.getRequiredEnv('PRIVATE_KEY'),
+    };
+};
+exports.makeConfig = makeConfig;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2NvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwREFBOEM7QUFFakMsUUFBQSxnQkFBZ0IsR0FBRyxTQUFTLENBQUE7QUFTbEMsTUFBTSxVQUFVLEdBQUcsR0FBVyxFQUFFO0lBQ3JDLE9BQU87UUFDTCxHQUFHLEVBQUUsRUFBRTtRQUNQLE1BQU0sRUFBRSxtQkFBSSxDQUFDLGNBQWMsQ0FBQyxTQUFTLENBQUM7UUFDdEMsU0FBUyxFQUFFLE1BQU0sQ0FBQyxtQkFBSSxDQUFDLGNBQWMsQ0FBQyxZQUFZLENBQUMsQ0FBQztRQUNwRCxVQUFVLEVBQUUsbUJBQUksQ0FBQyxjQUFjLENBQUMsYUFBYSxDQUFDO0tBQy9DLENBQUE7QUFDSCxDQUFDLENBQUE7QUFQWSxRQUFBLFVBQVUsY0FPdEIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyB1dGlsIH0gZnJvbSAnQGNoYWlubGluay9lYS1ib290c3RyYXAnXG5cbmV4cG9ydCBjb25zdCBERUZBVUxUX0VORFBPSU5UID0gJ2NvbmZsdXgnXG5cbmV4cG9ydCB0eXBlIENvbmZpZyA9IHtcbiAgYXBpOiBhbnlcbiAgcnBjVXJsOiBzdHJpbmdcbiAgbmV0d29ya0lkOiBudW1iZXJcbiAgcHJpdmF0ZUtleTogc3RyaW5nXG59XG5cbmV4cG9ydCBjb25zdCBtYWtlQ29uZmlnID0gKCk6IENvbmZpZyA9PiB7XG4gIHJldHVybiB7XG4gICAgYXBpOiB7fSxcbiAgICBycGNVcmw6IHV0aWwuZ2V0UmVxdWlyZWRFbnYoJ1JQQ19VUkwnKSxcbiAgICBuZXR3b3JrSWQ6IE51bWJlcih1dGlsLmdldFJlcXVpcmVkRW52KCdORVRXT1JLX0lEJykpLFxuICAgIHByaXZhdGVLZXk6IHV0aWwuZ2V0UmVxdWlyZWRFbnYoJ1BSSVZBVEVfS0VZJyksXG4gIH1cbn1cbiJdfQ==

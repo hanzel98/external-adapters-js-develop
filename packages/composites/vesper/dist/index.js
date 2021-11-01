@@ -1,0 +1,12 @@
+"use strict";
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const adapter_1 = require("./adapter");
+const config_1 = require("./config");
+const NAME = 'VESPER';
+module.exports = {
+    NAME,
+    makeConfig: config_1.makeConfig,
+    makeExecute: adapter_1.makeExecute,
+    ...ea_bootstrap_1.expose(NAME, adapter_1.makeExecute(), undefined, adapter_1.endpointSelector),
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLDBEQUFnRDtBQUNoRCx1Q0FBeUQ7QUFDekQscUNBQXFDO0FBRXJDLE1BQU0sSUFBSSxHQUFHLFFBQVEsQ0FBQTtBQUVyQixpQkFBUztJQUNQLElBQUk7SUFDSixVQUFVLEVBQVYsbUJBQVU7SUFDVixXQUFXLEVBQVgscUJBQVc7SUFDWCxHQUFHLHFCQUFNLENBQUMsSUFBSSxFQUFFLHFCQUFXLEVBQUUsRUFBRSxTQUFTLEVBQUUsMEJBQWdCLENBQUM7Q0FDNUQsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGV4cG9zZSB9IGZyb20gJ0BjaGFpbmxpbmsvZWEtYm9vdHN0cmFwJ1xuaW1wb3J0IHsgZW5kcG9pbnRTZWxlY3RvciwgbWFrZUV4ZWN1dGUgfSBmcm9tICcuL2FkYXB0ZXInXG5pbXBvcnQgeyBtYWtlQ29uZmlnIH0gZnJvbSAnLi9jb25maWcnXG5cbmNvbnN0IE5BTUUgPSAnVkVTUEVSJ1xuXG5leHBvcnQgPSB7XG4gIE5BTUUsXG4gIG1ha2VDb25maWcsXG4gIG1ha2VFeGVjdXRlLFxuICAuLi5leHBvc2UoTkFNRSwgbWFrZUV4ZWN1dGUoKSwgdW5kZWZpbmVkLCBlbmRwb2ludFNlbGVjdG9yKSxcbn1cbiJdfQ==

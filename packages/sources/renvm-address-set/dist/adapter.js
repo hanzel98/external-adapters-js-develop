@@ -1,0 +1,72 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeExecute = exports.execute = void 0;
+const tslib_1 = require("tslib");
+const ea_bootstrap_1 = require("@chainlink/ea-bootstrap");
+const ren_1 = tslib_1.__importDefault(require("@renproject/ren"));
+const coins_1 = require("./coins");
+const config_1 = require("./config");
+const ren_2 = require("./ren");
+const inputParams = {
+    network: false,
+    tokenOrContract: false,
+};
+// Export function to integrate with Chainlink node
+const execute = async (request, _, config) => {
+    const validator = new ea_bootstrap_1.Validator(request, inputParams);
+    if (validator.error)
+        throw validator.error;
+    ea_bootstrap_1.Requester.logConfig(config);
+    const jobRunID = validator.validated.id;
+    const { data } = validator.validated;
+    if (config.network && config.network !== data.network) {
+        throw Error(`Unsupported Ren network: ${config.network}.`);
+    }
+    const network = data.network || config_1.DEFAULT_NETWORK;
+    if (!ren_2.isRenNetwork(network)) {
+        throw Error(`Unknown Ren network: ${data.network}`);
+    }
+    let tokenOrContract = data.tokenOrContract || config_1.DEFAULT_TOKEN_OR_CONTRACT;
+    tokenOrContract = tokenOrContract.length === 3 ? tokenOrContract.toUpperCase() : tokenOrContract;
+    if (!ren_2.isAsset(tokenOrContract) && !ren_2.isRenContract(tokenOrContract)) {
+        throw Error(`Unknown Ren tokenOrContract: ${tokenOrContract}`);
+    }
+    const renContract = ren_2.isAsset(tokenOrContract) ? ren_2.resolveInToken(tokenOrContract) : tokenOrContract;
+    // Only BTC is supported for now
+    if (renContract !== ren_2.RenContract.Btc2Eth && renContract !== ren_2.RenContract.Eth2Btc) {
+        throw Error(`Unsupported token: ${tokenOrContract}`);
+    }
+    const bitcoinNetwork = coins_1.btc.getNetwork(network);
+    if (!bitcoinNetwork) {
+        throw Error(`Unknown Bitcoin network: ${network}`);
+    }
+    const _getAddress = async () => {
+        if (!config.api)
+            return undefined;
+        const { renVM } = new ren_1.default(network, {
+            // use v1 legacy version
+            useV2TransactionFormat: false,
+        });
+        // hard code asset since we only support BTC anyway in this adapter
+        const out = await renVM.selectPublicKey(renContract, 'BTC');
+        return coins_1.btc.p2pkh(out, bitcoinNetwork).address;
+    };
+    const address = await _getAddress();
+    const result = [
+        {
+            address,
+            coin: ren_2.getTokenName(renContract).toLowerCase(),
+            chain: network,
+        },
+    ];
+    return ea_bootstrap_1.Requester.success(jobRunID, {
+        data: { result },
+        status: 200,
+    }, config.verbose);
+};
+exports.execute = execute;
+const makeExecute = (config) => {
+    return async (request, context) => exports.execute(request, context, config || config_1.makeConfig());
+};
+exports.makeExecute = makeExecute;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYWRhcHRlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy9hZGFwdGVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7QUFBQSwwREFBOEQ7QUFFOUQsa0VBQW1DO0FBQ25DLG1DQUE2QjtBQUM3QixxQ0FBaUY7QUFDakYsK0JBT2M7QUFDZCxNQUFNLFdBQVcsR0FBRztJQUNsQixPQUFPLEVBQUUsS0FBSztJQUNkLGVBQWUsRUFBRSxLQUFLO0NBQ3ZCLENBQUE7QUFFRCxtREFBbUQ7QUFDNUMsTUFBTSxPQUFPLEdBQThCLEtBQUssRUFBRSxPQUFPLEVBQUUsQ0FBQyxFQUFFLE1BQU0sRUFBRSxFQUFFO0lBQzdFLE1BQU0sU0FBUyxHQUFHLElBQUksd0JBQVMsQ0FBQyxPQUFPLEVBQUUsV0FBVyxDQUFDLENBQUE7SUFDckQsSUFBSSxTQUFTLENBQUMsS0FBSztRQUFFLE1BQU0sU0FBUyxDQUFDLEtBQUssQ0FBQTtJQUUxQyx3QkFBUyxDQUFDLFNBQVMsQ0FBQyxNQUFNLENBQUMsQ0FBQTtJQUUzQixNQUFNLFFBQVEsR0FBRyxTQUFTLENBQUMsU0FBUyxDQUFDLEVBQUUsQ0FBQTtJQUN2QyxNQUFNLEVBQUUsSUFBSSxFQUFFLEdBQUcsU0FBUyxDQUFDLFNBQVMsQ0FBQTtJQUVwQyxJQUFJLE1BQU0sQ0FBQyxPQUFPLElBQUksTUFBTSxDQUFDLE9BQU8sS0FBSyxJQUFJLENBQUMsT0FBTyxFQUFFO1FBQ3JELE1BQU0sS0FBSyxDQUFDLDRCQUE0QixNQUFNLENBQUMsT0FBTyxHQUFHLENBQUMsQ0FBQTtLQUMzRDtJQUVELE1BQU0sT0FBTyxHQUFHLElBQUksQ0FBQyxPQUFPLElBQUksd0JBQWUsQ0FBQTtJQUMvQyxJQUFJLENBQUMsa0JBQVksQ0FBQyxPQUFPLENBQUMsRUFBRTtRQUMxQixNQUFNLEtBQUssQ0FBQyx3QkFBd0IsSUFBSSxDQUFDLE9BQU8sRUFBRSxDQUFDLENBQUE7S0FDcEQ7SUFFRCxJQUFJLGVBQWUsR0FBRyxJQUFJLENBQUMsZUFBZSxJQUFJLGtDQUF5QixDQUFBO0lBQ3ZFLGVBQWUsR0FBRyxlQUFlLENBQUMsTUFBTSxLQUFLLENBQUMsQ0FBQyxDQUFDLENBQUMsZUFBZSxDQUFDLFdBQVcsRUFBRSxDQUFDLENBQUMsQ0FBQyxlQUFlLENBQUE7SUFFaEcsSUFBSSxDQUFDLGFBQU8sQ0FBQyxlQUFlLENBQUMsSUFBSSxDQUFDLG1CQUFhLENBQUMsZUFBZSxDQUFDLEVBQUU7UUFDaEUsTUFBTSxLQUFLLENBQUMsZ0NBQWdDLGVBQWUsRUFBRSxDQUFDLENBQUE7S0FDL0Q7SUFFRCxNQUFNLFdBQVcsR0FBRyxhQUFPLENBQUMsZUFBZSxDQUFDLENBQUMsQ0FBQyxDQUFDLG9CQUFjLENBQUMsZUFBZSxDQUFDLENBQUMsQ0FBQyxDQUFDLGVBQWUsQ0FBQTtJQUVoRyxnQ0FBZ0M7SUFDaEMsSUFBSSxXQUFXLEtBQUssaUJBQVcsQ0FBQyxPQUFPLElBQUksV0FBVyxLQUFLLGlCQUFXLENBQUMsT0FBTyxFQUFFO1FBQzlFLE1BQU0sS0FBSyxDQUFDLHNCQUFzQixlQUFlLEVBQUUsQ0FBQyxDQUFBO0tBQ3JEO0lBRUQsTUFBTSxjQUFjLEdBQUcsV0FBRyxDQUFDLFVBQVUsQ0FBQyxPQUFPLENBQUMsQ0FBQTtJQUM5QyxJQUFJLENBQUMsY0FBYyxFQUFFO1FBQ25CLE1BQU0sS0FBSyxDQUFDLDRCQUE0QixPQUFPLEVBQUUsQ0FBQyxDQUFBO0tBQ25EO0lBRUQsTUFBTSxXQUFXLEdBQUcsS0FBSyxJQUFpQyxFQUFFO1FBQzFELElBQUksQ0FBQyxNQUFNLENBQUMsR0FBRztZQUFFLE9BQU8sU0FBUyxDQUFBO1FBQ2pDLE1BQU0sRUFBRSxLQUFLLEVBQUUsR0FBRyxJQUFJLGFBQUssQ0FBQyxPQUFPLEVBQUU7WUFDbkMsd0JBQXdCO1lBQ3hCLHNCQUFzQixFQUFFLEtBQUs7U0FDOUIsQ0FBQyxDQUFBO1FBQ0YsbUVBQW1FO1FBQ25FLE1BQU0sR0FBRyxHQUFXLE1BQU0sS0FBSyxDQUFDLGVBQWUsQ0FBQyxXQUFXLEVBQUUsS0FBSyxDQUFDLENBQUE7UUFDbkUsT0FBTyxXQUFHLENBQUMsS0FBSyxDQUFDLEdBQUcsRUFBRSxjQUFjLENBQUMsQ0FBQyxPQUFPLENBQUE7SUFDL0MsQ0FBQyxDQUFBO0lBRUQsTUFBTSxPQUFPLEdBQUcsTUFBTSxXQUFXLEVBQUUsQ0FBQTtJQUNuQyxNQUFNLE1BQU0sR0FBRztRQUNiO1lBQ0UsT0FBTztZQUNQLElBQUksRUFBRSxrQkFBWSxDQUFDLFdBQVcsQ0FBQyxDQUFDLFdBQVcsRUFBRTtZQUM3QyxLQUFLLEVBQUUsT0FBTztTQUNmO0tBQ0YsQ0FBQTtJQUVELE9BQU8sd0JBQVMsQ0FBQyxPQUFPLENBQ3RCLFFBQVEsRUFDUjtRQUNFLElBQUksRUFBRSxFQUFFLE1BQU0sRUFBRTtRQUNoQixNQUFNLEVBQUUsR0FBRztLQUNaLEVBQ0QsTUFBTSxDQUFDLE9BQU8sQ0FDZixDQUFBO0FBQ0gsQ0FBQyxDQUFBO0FBakVZLFFBQUEsT0FBTyxXQWlFbkI7QUFFTSxNQUFNLFdBQVcsR0FBMkIsQ0FBQyxNQUFNLEVBQUUsRUFBRTtJQUM1RCxPQUFPLEtBQUssRUFBRSxPQUFPLEVBQUUsT0FBTyxFQUFFLEVBQUUsQ0FBQyxlQUFPLENBQUMsT0FBTyxFQUFFLE9BQU8sRUFBRSxNQUFNLElBQUksbUJBQVUsRUFBRSxDQUFDLENBQUE7QUFDdEYsQ0FBQyxDQUFBO0FBRlksUUFBQSxXQUFXLGVBRXZCIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgUmVxdWVzdGVyLCBWYWxpZGF0b3IgfSBmcm9tICdAY2hhaW5saW5rL2VhLWJvb3RzdHJhcCdcbmltcG9ydCB7IENvbmZpZywgRXhlY3V0ZUZhY3RvcnksIEV4ZWN1dGVXaXRoQ29uZmlnIH0gZnJvbSAnQGNoYWlubGluay90eXBlcydcbmltcG9ydCBSZW5KUyBmcm9tICdAcmVucHJvamVjdC9yZW4nXG5pbXBvcnQgeyBidGMgfSBmcm9tICcuL2NvaW5zJ1xuaW1wb3J0IHsgREVGQVVMVF9ORVRXT1JLLCBERUZBVUxUX1RPS0VOX09SX0NPTlRSQUNULCBtYWtlQ29uZmlnIH0gZnJvbSAnLi9jb25maWcnXG5pbXBvcnQge1xuICBnZXRUb2tlbk5hbWUsXG4gIGlzQXNzZXQsXG4gIGlzUmVuQ29udHJhY3QsXG4gIGlzUmVuTmV0d29yayxcbiAgUmVuQ29udHJhY3QsXG4gIHJlc29sdmVJblRva2VuLFxufSBmcm9tICcuL3JlbidcbmNvbnN0IGlucHV0UGFyYW1zID0ge1xuICBuZXR3b3JrOiBmYWxzZSxcbiAgdG9rZW5PckNvbnRyYWN0OiBmYWxzZSxcbn1cblxuLy8gRXhwb3J0IGZ1bmN0aW9uIHRvIGludGVncmF0ZSB3aXRoIENoYWlubGluayBub2RlXG5leHBvcnQgY29uc3QgZXhlY3V0ZTogRXhlY3V0ZVdpdGhDb25maWc8Q29uZmlnPiA9IGFzeW5jIChyZXF1ZXN0LCBfLCBjb25maWcpID0+IHtcbiAgY29uc3QgdmFsaWRhdG9yID0gbmV3IFZhbGlkYXRvcihyZXF1ZXN0LCBpbnB1dFBhcmFtcylcbiAgaWYgKHZhbGlkYXRvci5lcnJvcikgdGhyb3cgdmFsaWRhdG9yLmVycm9yXG5cbiAgUmVxdWVzdGVyLmxvZ0NvbmZpZyhjb25maWcpXG5cbiAgY29uc3Qgam9iUnVuSUQgPSB2YWxpZGF0b3IudmFsaWRhdGVkLmlkXG4gIGNvbnN0IHsgZGF0YSB9ID0gdmFsaWRhdG9yLnZhbGlkYXRlZFxuXG4gIGlmIChjb25maWcubmV0d29yayAmJiBjb25maWcubmV0d29yayAhPT0gZGF0YS5uZXR3b3JrKSB7XG4gICAgdGhyb3cgRXJyb3IoYFVuc3VwcG9ydGVkIFJlbiBuZXR3b3JrOiAke2NvbmZpZy5uZXR3b3JrfS5gKVxuICB9XG5cbiAgY29uc3QgbmV0d29yayA9IGRhdGEubmV0d29yayB8fCBERUZBVUxUX05FVFdPUktcbiAgaWYgKCFpc1Jlbk5ldHdvcmsobmV0d29yaykpIHtcbiAgICB0aHJvdyBFcnJvcihgVW5rbm93biBSZW4gbmV0d29yazogJHtkYXRhLm5ldHdvcmt9YClcbiAgfVxuXG4gIGxldCB0b2tlbk9yQ29udHJhY3QgPSBkYXRhLnRva2VuT3JDb250cmFjdCB8fCBERUZBVUxUX1RPS0VOX09SX0NPTlRSQUNUXG4gIHRva2VuT3JDb250cmFjdCA9IHRva2VuT3JDb250cmFjdC5sZW5ndGggPT09IDMgPyB0b2tlbk9yQ29udHJhY3QudG9VcHBlckNhc2UoKSA6IHRva2VuT3JDb250cmFjdFxuXG4gIGlmICghaXNBc3NldCh0b2tlbk9yQ29udHJhY3QpICYmICFpc1JlbkNvbnRyYWN0KHRva2VuT3JDb250cmFjdCkpIHtcbiAgICB0aHJvdyBFcnJvcihgVW5rbm93biBSZW4gdG9rZW5PckNvbnRyYWN0OiAke3Rva2VuT3JDb250cmFjdH1gKVxuICB9XG5cbiAgY29uc3QgcmVuQ29udHJhY3QgPSBpc0Fzc2V0KHRva2VuT3JDb250cmFjdCkgPyByZXNvbHZlSW5Ub2tlbih0b2tlbk9yQ29udHJhY3QpIDogdG9rZW5PckNvbnRyYWN0XG5cbiAgLy8gT25seSBCVEMgaXMgc3VwcG9ydGVkIGZvciBub3dcbiAgaWYgKHJlbkNvbnRyYWN0ICE9PSBSZW5Db250cmFjdC5CdGMyRXRoICYmIHJlbkNvbnRyYWN0ICE9PSBSZW5Db250cmFjdC5FdGgyQnRjKSB7XG4gICAgdGhyb3cgRXJyb3IoYFVuc3VwcG9ydGVkIHRva2VuOiAke3Rva2VuT3JDb250cmFjdH1gKVxuICB9XG5cbiAgY29uc3QgYml0Y29pbk5ldHdvcmsgPSBidGMuZ2V0TmV0d29yayhuZXR3b3JrKVxuICBpZiAoIWJpdGNvaW5OZXR3b3JrKSB7XG4gICAgdGhyb3cgRXJyb3IoYFVua25vd24gQml0Y29pbiBuZXR3b3JrOiAke25ldHdvcmt9YClcbiAgfVxuXG4gIGNvbnN0IF9nZXRBZGRyZXNzID0gYXN5bmMgKCk6IFByb21pc2U8c3RyaW5nIHwgdW5kZWZpbmVkPiA9PiB7XG4gICAgaWYgKCFjb25maWcuYXBpKSByZXR1cm4gdW5kZWZpbmVkXG4gICAgY29uc3QgeyByZW5WTSB9ID0gbmV3IFJlbkpTKG5ldHdvcmssIHtcbiAgICAgIC8vIHVzZSB2MSBsZWdhY3kgdmVyc2lvblxuICAgICAgdXNlVjJUcmFuc2FjdGlvbkZvcm1hdDogZmFsc2UsXG4gICAgfSlcbiAgICAvLyBoYXJkIGNvZGUgYXNzZXQgc2luY2Ugd2Ugb25seSBzdXBwb3J0IEJUQyBhbnl3YXkgaW4gdGhpcyBhZGFwdGVyXG4gICAgY29uc3Qgb3V0OiBCdWZmZXIgPSBhd2FpdCByZW5WTS5zZWxlY3RQdWJsaWNLZXkocmVuQ29udHJhY3QsICdCVEMnKVxuICAgIHJldHVybiBidGMucDJwa2gob3V0LCBiaXRjb2luTmV0d29yaykuYWRkcmVzc1xuICB9XG5cbiAgY29uc3QgYWRkcmVzcyA9IGF3YWl0IF9nZXRBZGRyZXNzKClcbiAgY29uc3QgcmVzdWx0ID0gW1xuICAgIHtcbiAgICAgIGFkZHJlc3MsXG4gICAgICBjb2luOiBnZXRUb2tlbk5hbWUocmVuQ29udHJhY3QpLnRvTG93ZXJDYXNlKCksXG4gICAgICBjaGFpbjogbmV0d29yayxcbiAgICB9LFxuICBdXG5cbiAgcmV0dXJuIFJlcXVlc3Rlci5zdWNjZXNzKFxuICAgIGpvYlJ1bklELFxuICAgIHtcbiAgICAgIGRhdGE6IHsgcmVzdWx0IH0sXG4gICAgICBzdGF0dXM6IDIwMCxcbiAgICB9LFxuICAgIGNvbmZpZy52ZXJib3NlLFxuICApXG59XG5cbmV4cG9ydCBjb25zdCBtYWtlRXhlY3V0ZTogRXhlY3V0ZUZhY3Rvcnk8Q29uZmlnPiA9IChjb25maWcpID0+IHtcbiAgcmV0dXJuIGFzeW5jIChyZXF1ZXN0LCBjb250ZXh0KSA9PiBleGVjdXRlKHJlcXVlc3QsIGNvbnRleHQsIGNvbmZpZyB8fCBtYWtlQ29uZmlnKCkpXG59XG4iXX0=

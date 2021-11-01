@@ -31,6 +31,7 @@ export const initHandler =
       cache: null,
       rateLimit: getRateLimitConfig({ name }),
     }
+
     const cacheOptions = defaultOptions()
     if (cacheOptions.enabled) {
       cacheOptions.instance = await cacheOptions.cacheBuilder(cacheOptions.cacheImplOptions)
@@ -54,6 +55,7 @@ export const initHandler =
         ...(req.body.data || {}),
         ...toObjectWithNumbers(req.query),
       }
+    
       return executeSync(req.body, executeWithMiddleware, context, (status, result) => {
         res.status(status).json(result)
       })

@@ -1,0 +1,1 @@
+{"version":3,"file":"calcNetValueForSharesHolder.d.ts","sourceRoot":"","sources":["../../src/endpoint/calcNetValueForSharesHolder.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,eAAe,EAAE,MAAM,kBAAkB,CAAA;AACrE,OAAO,EAAE,MAAM,EAAE,MAAM,WAAW,CAAA;AAIlC,eAAO,MAAM,kBAAkB,UAAkC,CAAA;AAEjE,eAAO,MAAM,eAAe,EAAE,eAI7B,CAAA;AAED,eAAO,MAAM,OAAO,EAAE,iBAAiB,CAAC,MAAM,CA4B7C,CAAA"}
