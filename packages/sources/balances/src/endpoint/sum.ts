@@ -1,6 +1,6 @@
 import { Requester, Validator } from '@chainlink/ea-bootstrap'
 import { Config, ExecuteWithConfig, InputParameters } from '@chainlink/types'
-import { DEFAULT_API_ENDPOINT } from '../config';
+import { DEFAULT_API_ENDPOINT } from '../config'
 
 // Call this endpont to execute the sum function
 export const supportedEndpoints = ['sum'] 
@@ -38,9 +38,9 @@ export const execute: ExecuteWithConfig<Config> = async (request: any, _:any, co
 
   const response = await Requester.request(options, customError)
   validateResponse(response)
-  const results = response.data;
+  const results = response.data
   // Sum all the balances obtained in the query response
-  const total: number = results.reduce((accumulator: number, current: IAccountResult) => accumulator + current.balance, 0);
+  const total: number = results.reduce((accumulator: number, current: IAccountResult) => accumulator + current.balance, 0)
   response.data = {
     total,
   }
