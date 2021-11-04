@@ -40,8 +40,8 @@ const includeSplittedAddress = (account: IAccountResult): IAccountResult => {
     throw Error(`Unable to find values`)
   }
   const accountCopy: IAccountResult = {...account}
-  const accountAddressLength = accountCopy.address.length
-  const halfElementIndex = Math.round(accountAddressLength/2)
+  const accountAddressLength: number = accountCopy.address.length
+  const halfElementIndex: number = Math.round(accountAddressLength/2)
   accountCopy.address1 = accountCopy.address.substr(0, halfElementIndex)
   accountCopy.address2 = accountCopy.address.substr(halfElementIndex, accountAddressLength-1)
   return accountCopy
